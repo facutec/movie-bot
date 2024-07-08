@@ -1,51 +1,21 @@
-const db = require('../config/firebaseConfig');
-const { v4: uuidv4 } = require('uuid');
-const { Markup } = require('telegraf');
-const QRCode = require('qrcode');
-const { FieldValue, Timestamp } = require('firebase-admin/firestore');
-const dotenv = require('dotenv');
-dotenv.config();
-
-// Función para verificar si el usuario está registrado
-async function checkUserRegistered(userId) {
-  const userSnapshot = await db.collection("usuarios").doc(userId).get();
-  return userSnapshot.exists ? userSnapshot.data() : null;
-}
-
-// Función para registrar un nuevo usuario
-async function registerUser(userCtx) {
-  const newUser = {
-    userId: userCtx.id.toString(),
-    nombre: userCtx.first_name,  // Asumiendo que el nombre de Telegram se usará como nombre
-    telegramId: userCtx.id.toString(),  // ID de Telegram
-    email: "",  // Dejar vacío o pedir al usuario que proporcione un email
-    reservas: []  // Inicializar con un arreglo vacío
-  };
-
-  await db.collection("usuarios").doc(newUser.userId).set(newUser);
-  return newUser;
-}
-
-
-// Función asíncrona para manejar la reserva
 async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
   console.log(`Reserva intent: peliculaId=${peliculaId}, hora=${hora}, fecha=${fecha}`);
 
   try {
     // Comprobar si el usuario está registrado
     const userId = ctx.from.id.toString();
-    const user = await checkUserRegistered(userId);
+    let user = await checkUserRegistered(userId);
   
     if (!user) {
-      // Registra al usuario si no está en la base de datos
-      await registerUser(ctx.from);
+      // Registra al usuario si no está en la base de datos y asigna el usuario registrado
+      user = await registerUser(ctx.from);
     }
+
     // Verificar si el usuario ya tiene 2 reservas activas
     if (user.reservas.length >= 2) {
       ctx.reply("Lo siento, ya has alcanzado el límite máximo de 2 reservas activas.");
       return;
-  }
- 
+    }
 
     // Obtener el documento de la función específica
     const funcionesSnapshot = await db.collection("funciones")
@@ -57,8 +27,7 @@ async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
       return;
     }
 
-
-    //Si coincide la hora y fecha de la función con la seleccionada por el usuario
+    // Si coincide la hora y fecha de la función con la seleccionada por el usuario
     let funcionData;
     funcionesSnapshot.forEach(doc => {
       const data = doc.data();
@@ -91,7 +60,6 @@ async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
       caducidad
     };
 
-     
     // Guardar la reserva en Firestore
     await db.collection("reservas").doc(reservaId).set(reserva);
 
@@ -111,14 +79,11 @@ async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
       funciones: funcionesActualizadas
     });
 
-      // Añadir la reservaId al array de reservas del usuario
+    // Añadir la reservaId al array de reservas del usuario
     await db.collection("usuarios").doc(userId).update({
       reservas: FieldValue.arrayUnion(reservaId)
     });
 
-
-    // Generar el código QR con la información de la reserva
-    // const qrData = `Nombre de Usuario: ${userName}\nID Reserva: ${reservaId}\nPelícula: ${peliculaId}\nTu reserva vence a la hora: ${caducidad}\nFunción comienza a las: ${fecha} ${hora}\n`;
     // Generar el código QR con la información de la reserva y una URL de escaneo
     const qrData = `${process.env.BASE_URL}/scanqr?reservaId=${reservaId}`;
     const qrCode = await QRCode.toBuffer(qrData);
@@ -140,5 +105,3 @@ async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
     ctx.reply("Lo siento, hubo un error al realizar la reserva.");
   }
 }
-
-module.exports = handleReservaIntent;
