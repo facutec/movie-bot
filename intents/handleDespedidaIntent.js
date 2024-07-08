@@ -12,7 +12,7 @@ const handleInactivityAfterFarewell = (ctx) => {
   const timer = setTimeout(() => {
     ctx.reply("¡Hasta luego!");
     inactivityTimers.delete(chatId);
-  }, 5000); // 5 segundos de espera después de la despedida
+  }, 100); 
 
   inactivityTimers.set(chatId, timer);
 };
