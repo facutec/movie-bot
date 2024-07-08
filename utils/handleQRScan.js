@@ -1,5 +1,6 @@
 const db = require('../config/firebaseConfig');
 const { FieldValue } = require('firebase-admin/firestore');
+const bot = require('../server'); // Importa el bot de server.js
 
 async function handleQRScan(ctx, reservaId) {
   try {
@@ -10,6 +11,7 @@ async function handleQRScan(ctx, reservaId) {
       return;
     }
 
+    // Verificar si la reserva ya fue comprada
     const reserva = reservaSnapshot.data();
     if (reserva.comprada) {
       await ctx.reply('Reserva ya marcada como comprada');
@@ -22,14 +24,27 @@ async function handleQRScan(ctx, reservaId) {
       compraTimestamp: new Date().toISOString()
     });
 
-    // Eliminar la última reserva del array de reservas del usuario
+    // Eliminar la reserva del array de reservas del usuario
     const userSnapshot = await db.collection('usuarios').doc(reserva.userId).get();
     if (userSnapshot.exists) {
       const userData = userSnapshot.data();
       const reservasActualizadas = userData.reservas.filter(id => id !== reservaId);
+      const reservasAntes = userData.reservas.length;
+
       await db.collection('usuarios').doc(reserva.userId).update({
         reservas: reservasActualizadas
       });
+
+      const userSnapshotDespues = await db.collection('usuarios').doc(reserva.userId).get();
+      const reservasDespues = userSnapshotDespues.data().reservas.length;
+
+      // Verificar que el número de reservas ha disminuido en 1
+      if (reservasDespues === reservasAntes - 1) {
+        // Enviar un mensaje al usuario a través del bot de Telegram
+        await bot.telegram.sendMessage(userData.telegramId, 'Tu reserva ha sido marcada como comprada exitosamente. ¡Disfruta de la película! 🎬🥳');
+      } else {
+        console.error('Error: La reserva no se eliminó correctamente del array de reservas del usuario');
+      }
     }
 
     await ctx.reply('Reserva marcada como comprada exitosamente');
