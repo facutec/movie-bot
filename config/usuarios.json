@@ -1,0 +1,16 @@
+{
+  "user1": {
+    "userId": "uniqueUserId123",
+    "nombre": "John Doe",
+    "telegramId": "telegramUserId1",
+    "email": "john.doe@example.com",
+    "reservas": ["reserva1"]
+  },
+  "user2": {
+    "userId": "uniqueUserId456",
+    "nombre": "Jane Smith",
+    "telegramId": "telegramUserId2",
+    "email": "jane.smith@example.com",
+    "reservas": ["reserva2"]
+  }
+}

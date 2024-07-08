@@ -1,0 +1,19 @@
+{
+    "reserva1": {
+      "reservaId": "uniqueReservaId123",
+      "userId": "uniqueUserId123",
+      "peliculaId": "peliculaA",
+      "funcion": { "hora": "10:00", "fecha": "2024-07-05" },
+      "timestamp": "2024-07-01T08:00:00Z",
+      "caducidad": "2024-07-05T09:30:00Z"
+    },
+    "reserva2": {
+      "reservaId": "uniqueReservaId456",
+      "userId": "uniqueUserId456",
+      "peliculaId": "peliculaB",
+      "funcion": { "hora": "11:00", "fecha": "2024-07-05" },
+      "timestamp": "2024-07-01T09:00:00Z",
+      "caducidad": "2024-07-05T10:30:00Z"
+    }
+  }
+  

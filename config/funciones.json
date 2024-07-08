@@ -1,0 +1,97 @@
+{
+  "inception": {
+    "peliculaId": "inception",
+    "funciones": [
+      {
+        "hora": "14:00",
+        "fecha": "2024-07-05",
+        "asientosDisponibles": 40,
+        "precio": 12.0,
+        "promociones": "Combo palomitas + bebida a $5"
+      },
+      {
+        "hora": "18:00",
+        "fecha": "2024-07-05",
+        "asientosDisponibles": 20,
+        "precio": 12.0,
+        "promociones": "Combo palomitas + bebida a $5"
+      }
+    ]
+  },
+  "the_dark_knight": {
+    "peliculaId": "the_dark_knight",
+    "funciones": [
+      {
+        "hora": "16:00",
+        "fecha": "2024-07-05",
+        "asientosDisponibles": 50,
+        "precio": 10.0,
+        "promociones": "2x1 los miércoles"
+      },
+      {
+        "hora": "21:00",
+        "fecha": "2024-07-05",
+        "asientosDisponibles": 0,
+        "precio": 10.0,
+        "promociones": "2x1 los miércoles"
+      }
+    ]
+  },
+  "parasite": {
+    "peliculaId": "parasite",
+    "funciones": [
+      {
+        "hora": "11:00",
+        "fecha": "2024-07-05",
+        "asientosDisponibles": 30,
+        "precio": 11.0,
+        "promociones": "Descuento del 20% para estudiantes"
+      },
+      {
+        "hora": "13:00",
+        "fecha": "2024-07-05",
+        "asientosDisponibles": 35,
+        "precio": 11.0,
+        "promociones": "Descuento del 20% para estudiantes"
+      }
+    ]
+  },
+  "interstellar": {
+    "peliculaId": "interstellar",
+    "funciones": [
+      {
+        "hora": "15:00",
+        "fecha": "2024-07-05",
+        "asientosDisponibles": 25,
+        "precio": 13.0,
+        "promociones": "Entradas a mitad de precio los martes"
+      },
+      {
+        "hora": "19:00",
+        "fecha": "2024-07-05",
+        "asientosDisponibles": 10,
+        "precio": 13.0,
+        "promociones": "Entradas a mitad de precio los martes"
+      }
+    ]
+  },
+  "the_lion_king": {
+    "peliculaId": "the_lion_king",
+    "funciones": [
+      {
+        "hora": "10:00",
+        "fecha": "2024-07-05",
+        "asientosDisponibles": 50,
+        "precio": 9.0,
+        "promociones": "Niños menores de 12 años entran gratis"
+      },
+      {
+        "hora": "12:00",
+        "fecha": "2024-07-05",
+        "asientosDisponibles": 45,
+        "precio": 9.0,
+        "promociones": "Niños menores de 12 años entran gratis"
+      }
+    ]
+  }
+}

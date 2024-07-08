@@ -1,0 +1,37 @@
+{
+  "inception": {
+    "peliculaId": "inception",
+    "nombre": "Inception",
+    "sinopsis": "Un ladrón que roba secretos corporativos a través del uso de la tecnología de sueño compartido es dado la tarea inversa de plantar una idea en la mente de un director ejecutivo.",
+    "precio": 12,
+    "duracion": 148
+  },
+  "the_dark_knight": {
+    "peliculaId": "the_dark_knight",
+    "nombre": "The Dark Knight",
+    "sinopsis": "Cuando el Joker emerge de su misterioso pasado, causa estragos y caos en la gente de Gotham. El Caballero Oscuro debe aceptar uno de los mayores desafíos psicológicos y físicos para luchar contra la injusticia.",
+    "precio": 10,
+    "duracion": 152
+  },
+  "parasite": {
+    "peliculaId": "parasite",
+    "nombre": "Parasite",
+    "sinopsis": "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
+    "precio": 11,
+    "duracion": 132
+  },
+  "interstellar": {
+    "peliculaId": "interstellar",
+    "nombre": "Interstellar",
+    "sinopsis": "Un equipo de exploradores viaja a través de un agujero de gusano en el espacio en un intento de asegurar la supervivencia de la humanidad.",
+    "precio": 13,
+    "duracion": 169
+  },
+  "the_lion_king": {
+    "peliculaId": "the_lion_king",
+    "nombre": "The Lion King",
+    "sinopsis": "Después del asesinato de su padre, un joven león príncipe huye de su reino solo para aprender el verdadero significado de responsabilidad y valentía.",
+    "precio": 9,
+    "duracion": 88
+  }
+}
