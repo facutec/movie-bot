@@ -3,6 +3,8 @@ const { v4: uuidv4 } = require('uuid');
 const { Markup } = require('telegraf');
 const QRCode = require('qrcode');
 const { FieldValue, Timestamp } = require('firebase-admin/firestore');
+const dotenv = require('dotenv');
+dotenv.config();
 
 // Función para verificar si el usuario está registrado
 async function checkUserRegistered(userId) {

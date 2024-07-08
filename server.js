@@ -1,14 +1,29 @@
+require("dotenv").config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const { Telegraf } = require('telegraf');
+const { Telegraf, Markup } = require("telegraf");
+const uuid = require("uuid");
+const sendToDialogflow = require("./utils/dialogflowClient");
+const { handleCarteleraIntent, handleHorarioIntent, handleReservaIntent, handleHelpIntent, handleDespedidaIntent, handlePrecioCommand } = require('./intents');
+const { inactivityMiddleware } = require('./utils/inactivityMiddleware');
 const handleQRScan = require('./utils/handleQRScan.js'); // Importa la función de escaneo QR
-
-require('dotenv').config();
 
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 app.use(bodyParser.json());
+
+//Middlewares
+bot.use(inactivityMiddleware);
+
+// Manejador global para capturar y loggear todos los callback data
+bot.use(async (ctx, next) => {
+  if (ctx.updateType === 'callback_query') {
+    console.log('Callback data received:', ctx.callbackQuery.data);
+    await ctx.answerCbQuery(); // Responder al callback para evitar el "loading" en Telegram
+  }
+  return next();
+});
 
 // Inicializa el bot de Telegram con el token desde el archivo .env
 bot.start(async (ctx) => {
@@ -49,6 +64,49 @@ bot.on("text", async (ctx) => {
   }
 });
 
+//* Manejar los callbacks de los botones*//
+bot.action("cartelera", async (ctx) => {
+  console.log("Cartelera button pressed");
+  await handleCarteleraIntent(ctx);
+});
+
+bot.action("precio", async (ctx) => {
+  console.log("Precio button pressed");
+  await handlePrecioCommand(ctx);
+});
+
+bot.action("help", async (ctx) => {
+  console.log("Ayuda button pressed");
+  await handleHelpIntent(ctx);
+});
+
+bot.action("despedida", async (ctx) => {
+  console.log("Despedida button pressed");
+  await handleDespedidaIntent(ctx);
+});
+
+bot.action(/pelicula_(.*)/, async (ctx) => {
+  const peliculaId = ctx.match[1]; // Obtiene el ID de la película del callback data
+  await handleHorarioIntent(ctx, peliculaId);
+});
+
+bot.action(/horario_(.*)_(.*)_(.*)/, async (ctx) => {
+  const peliculaId = ctx.match[1]; // Captura el primer grupo (ID de la película)
+  const hora = ctx.match[2];       // Captura el segundo grupo (hora de la función)
+  const fecha = ctx.match[3];      // Captura el tercer grupo (fecha de la función)
+  
+  // Aquí puedes manejar lo que quieras hacer cuando el usuario selecciona un horario
+  await handleReservaIntent(ctx, peliculaId, hora, fecha);
+});
+
+bot.action('add_email', async (ctx) => {
+  const user = await registerUser(ctx);
+});
+
+bot.action('skip_email', async (ctx) => {
+  const user = await registerUser(ctx);
+});
+
 // Middleware de Telegraf para Express
 app.use(bot.webhookCallback('/bot'));
 
@@ -80,3 +138,7 @@ app.listen(PORT, () => {
     process.exit(1); // Salir del proceso si el bot no puede iniciarse
   });
 });
+
+// Maneja las señales de terminación del proceso para detener el bot correctamente
+process.once("SIGINT", () => bot.stop("SIGINT"));
+process.once("SIGTERM", () => bot.stop("SIGTERM"));
