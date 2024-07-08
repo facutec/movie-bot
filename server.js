@@ -6,14 +6,14 @@ const uuid = require("uuid");
 const sendToDialogflow = require("./utils/dialogflowClient");
 const { handleCarteleraIntent, handleHorarioIntent, handleReservaIntent, handleHelpIntent, handleDespedidaIntent, handlePrecioCommand } = require('./intents');
 const { inactivityMiddleware } = require('./utils/inactivityMiddleware');
-const handleQRScan = require('./utils/handleQRScan.js'); // Importa la función de escaneo QR
+const handleQRScan = require('./utils/handleQRScan.js');
 
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 app.use(bodyParser.json());
 
-//Middlewares
+// Middlewares
 bot.use(inactivityMiddleware);
 
 // Manejador global para capturar y loggear todos los callback data
@@ -129,16 +129,12 @@ app.get('/scanqr', async (req, res) => {
 
 // Iniciar el servidor HTTP
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
-  bot.launch().then(() => {
-    console.log('Bot started successfully');
-  }).catch((error) => {
-    console.error('Failed to start bot:', error);
-    process.exit(1); // Salir del proceso si el bot no puede iniciarse
-  });
-});
+  
+  // Establecer webhook
+  const webhookUrl = `${process.env.BASE_URL}/bot`;
+  await bot.telegram.setWebhook(webhookUrl);
 
-// Maneja las señales de terminación del proceso para detener el bot correctamente
-process.once("SIGINT", () => bot.stop("SIGINT"));
-process.once("SIGTERM", () => bot.stop("SIGTERM"));
+  console.log('Webhook has been set');
+});
