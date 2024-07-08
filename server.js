@@ -111,6 +111,7 @@ bot.action('skip_email', async (ctx) => {
 // Middleware de Telegraf para Express
 app.use(bot.webhookCallback('/bot'));
 
+
 // Endpoint para escanear el QR
 app.post('/qr-scan', async (req, res) => {
   const { reservaId } = req.body; // Asegúrate de obtener estos valores correctamente

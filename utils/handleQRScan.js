@@ -39,13 +39,8 @@ async function handleQRScan(ctx, reservaId, bot) {
 
       // Verificar que el número de reservas ha disminuido en 1
       if (reservasDespues === reservasAntes - 1) {
-        // Verificar que el bot está definido
-        if (bot && bot.telegram && bot.telegram.sendMessage) {
-          // Enviar un mensaje al usuario a través del bot de Telegram
-          await bot.telegram.sendMessage(userData.telegramId, 'Tu reserva ha sido marcada como comprada exitosamente. ¡Disfruta de la película! 🎬🥳');
-        } else {
-          console.error('Error: El bot no está definido correctamente');
-        }
+        // Enviar un mensaje al usuario a través del bot de Telegram
+        await bot.telegram.sendMessage(userData.telegramId, 'Tu reserva ha sido marcada como comprada exitosamente. ¡Disfruta de la película! 🎬🥳');
       } else {
         console.error('Error: La reserva no se eliminó correctamente del array de reservas del usuario');
       }
