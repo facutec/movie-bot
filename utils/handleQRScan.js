@@ -2,9 +2,6 @@ const db = require('../config/firebaseConfig');
 const { FieldValue } = require('firebase-admin/firestore');
 const bot = require('../server'); // Asegúrate de importar el bot correctamente
 
-
-console.log(bot); // Debería imprimir el objeto del bot de Telegram
-
 async function handleQRScan(ctx, reservaId) {
   try {
     // Verificar que la reserva exista
@@ -43,10 +40,13 @@ async function handleQRScan(ctx, reservaId) {
 
       // Verificar que el número de reservas ha disminuido en 1
       if (reservasDespues === reservasAntes - 1) {
-        console.log('BOT dentro de if', bot);
-
-        // Enviar un mensaje al usuario a través del bot de Telegram
-        await bot.telegram.sendMessage(userData.telegramId, 'Tu reserva ha sido marcada como comprada exitosamente. ¡Disfruta de la película! 🎬🥳');
+        // Verificar que el bot está definido
+        if (bot && bot.telegram && bot.telegram.sendMessage) {
+          // Enviar un mensaje al usuario a través del bot de Telegram
+          await bot.telegram.sendMessage(userData.telegramId, 'Tu reserva ha sido marcada como comprada exitosamente. ¡Disfruta de la película! 🎬🥳');
+        } else {
+          console.error('Error: El bot no está definido correctamente');
+        }
       } else {
         console.error('Error: La reserva no se eliminó correctamente del array de reservas del usuario');
       }
