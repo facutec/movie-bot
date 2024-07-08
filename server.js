@@ -9,12 +9,9 @@ const { inactivityMiddleware } = require('./utils/inactivityMiddleware');
 const handleQRScan = require('./utils/handleQRScan.js');
 
 const app = express();
-const bot = new Telegraf(process.env.BOT_TOKEN); // Inicializa el bot de Telegram
+const bot = new Telegraf(process.env.BOT_TOKEN);
 
-app.use(bodyParser.json()); // Middleware para parsear JSON
-
-
-//
+app.use(bodyParser.json());
 
 // Middlewares
 bot.use(inactivityMiddleware);
@@ -62,19 +59,10 @@ bot.on("text", async (ctx) => {
       ctx.reply(result.fulfillmentText);
     }
   } catch (error) {
-    console.error("Error enviando a DialogFlow el mensaje: ", error);
-    ctx.reply("Lo siento, hubo un error procesando tu mensaje y enviandolo para DialogFlow.");
+    console.error("Error handling message: ", error);
+    ctx.reply("Lo siento, hubo un error procesando tu mensaje.");
   }
 });
-
-
-
-
-
-
-// Manejar los comandos de Telegram
-
-
 
 //* Manejar los callbacks de los botones*//
 bot.action("cartelera", async (ctx) => {
@@ -111,10 +99,6 @@ bot.action(/horario_(.*)_(.*)_(.*)/, async (ctx) => {
   await handleReservaIntent(ctx, peliculaId, hora, fecha);
 });
 
-
-
-
-/*TODO: Añadir email del usuario preguntandole por consola*/
 bot.action('add_email', async (ctx) => {
   const user = await registerUser(ctx);
 });
@@ -126,37 +110,34 @@ bot.action('skip_email', async (ctx) => {
 // Middleware de Telegraf para Express
 app.use(bot.webhookCallback('/bot'));
 
+// Endpoint para escanear el QR
+app.get('/scanqr', async (req, res) => {
+  const { reservaId } = req.query;
+  if (!reservaId) {
+    return res.status(400).send('Missing reservaId');
+  }
 
-
-  /*----  MANEJO DEL ESCANEO DEL QR  ----*/
-
-
-  // Endpoint para escanear el QR
-  app.get('/scanqr', async (req, res) => {
-    const { reservaId } = req.query;
-    if (!reservaId) {
-      return res.status(400).send('Missing reservaId');
+  const ctx = {
+    reply: (message) => {
+      // Simula la función de respuesta de Telegram
+      res.send(message);
     }
+  };
 
-    const ctx = {
-      reply: (message) => {
-        // Simula la función de respuesta de Telegram
-        res.send(message);
-      }
-    };
+  await handleQRScan(ctx, reservaId);
+  // No se debe responder dos veces
+});
 
-    await handleQRScan(ctx, reservaId);
-    await ctx.reply('QR escaneado exitosamente');   // Mensaje de respuesta
-  });
+// Iniciar el servidor HTTP
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, async () => {
+  console.log(`Server is running on port ${PORT}`);
+  
+  // Establecer webhook
+  const webhookUrl = `${process.env.BASE_URL}/bot`;
+  await bot.telegram.setWebhook(webhookUrl);
 
-  // Iniciar el servidor HTTP
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, async () => {
-    console.log(`Server is running on port ${PORT}`);
-    
-    // Establecer webhook
-    const webhookUrl = `${process.env.BASE_URL}/bot`;
-    await bot.telegram.setWebhook(webhookUrl);
+  console.log('Webhook has been set');
+});
 
-    console.log('Webhook has been set');
-  });
+module.exports = bot;

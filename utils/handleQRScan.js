@@ -1,6 +1,6 @@
 const db = require('../config/firebaseConfig');
 const { FieldValue } = require('firebase-admin/firestore');
-const bot = require('../server'); // Importa el bot de server.js
+const bot = require('../server'); // Asegúrate de importar el bot correctamente
 
 async function handleQRScan(ctx, reservaId) {
   try {
