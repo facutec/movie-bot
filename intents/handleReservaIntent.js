@@ -1,3 +1,33 @@
+const db = require('../config/firebaseConfig');
+const { v4: uuidv4 } = require('uuid');
+const { Markup } = require('telegraf');
+const QRCode = require('qrcode');
+const { FieldValue, Timestamp } = require('firebase-admin/firestore');
+const dotenv = require('dotenv');
+dotenv.config();
+
+// Función para verificar si el usuario está registrado
+async function checkUserRegistered(userId) {
+  const userSnapshot = await db.collection("usuarios").doc(userId).get();
+  return userSnapshot.exists ? userSnapshot.data() : null;
+}
+
+// Función para registrar un nuevo usuario
+async function registerUser(userCtx) {
+  const newUser = {
+    userId: userCtx.id.toString(),
+    nombre: userCtx.first_name,  // Asumiendo que el nombre de Telegram se usará como nombre
+    telegramId: userCtx.id.toString(),  // ID de Telegram
+    email: "",  // Dejar vacío o pedir al usuario que proporcione un email
+    reservas: []  // Inicializar con un arreglo vacío
+  };
+
+  await db.collection("usuarios").doc(newUser.userId).set(newUser);
+  return newUser;
+}
+
+
+// Función asíncrona para manejar la reserva
 async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
   console.log(`Reserva intent: peliculaId=${peliculaId}, hora=${hora}, fecha=${fecha}`);
 
@@ -105,3 +135,6 @@ async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
     ctx.reply("Lo siento, hubo un error al realizar la reserva.");
   }
 }
+
+
+module.exports = handleReservaIntent;
