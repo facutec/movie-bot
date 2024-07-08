@@ -1,0 +1,12 @@
+#Dependencia de NODEJS  
+node_modules/
+
+#Variables de entorno
+.env
+*.json
+
+
+#Firebase
+
+rock-nebula-428500-c0-e28c8c741f7a.json
+config/rock-nebula-428500-c0-firebase-adminsdk-6aq8n-10425fdb96.json
