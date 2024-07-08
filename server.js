@@ -1,4 +1,4 @@
-require("dotenv").config();
+const dotenv = require('dotenv');
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Telegraf, Markup } = require("telegraf");
@@ -7,6 +7,7 @@ const sendToDialogflow = require("./utils/dialogflowClient");
 const { handleCarteleraIntent, handleHorarioIntent, handleReservaIntent, handleHelpIntent, handleDespedidaIntent, handlePrecioCommand } = require('./intents');
 const { inactivityMiddleware } = require('./utils/inactivityMiddleware');
 const handleQRScan = require('./utils/handleQRScan.js');
+dotenv.config();
 
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN);
