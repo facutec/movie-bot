@@ -113,6 +113,7 @@ app.use(bot.webhookCallback('/bot'));
 
 
 // Endpoint para escanear el QR
+//TODO: FIXEAR que envie un mensaje por el chat una vez escaneado el QR
 app.get('/scanqr', async (req, res) => {
   const { reservaId } = req.query; // Usamos req.query para obtener los parámetros en una solicitud GET
   if (!reservaId) {
