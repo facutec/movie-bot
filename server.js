@@ -6,7 +6,7 @@ const uuid = require("uuid");
 const sendToDialogflow = require("./utils/dialogflowClient");
 const { handleCarteleraIntent, handleHorarioIntent, handleReservaIntent, handleHelpIntent, handleDespedidaIntent, handlePrecioCommand } = require('./intents');
 const { inactivityMiddleware } = require('./utils/inactivityMiddleware');
-const handleQRScan = require('./utils/handleQRScan.js');
+const handleQRScan = require('./utils/handleQRScan'); // Importa handleQRScan
 dotenv.config();
 
 const app = express();
@@ -112,8 +112,8 @@ bot.action('skip_email', async (ctx) => {
 app.use(bot.webhookCallback('/bot'));
 
 // Endpoint para escanear el QR
-app.get('/scanqr', async (req, res) => {
-  const { reservaId } = req.query;
+app.post('/qr-scan', async (req, res) => {
+  const { reservaId } = req.body; // Asegúrate de obtener estos valores correctamente
   if (!reservaId) {
     return res.status(400).send('Missing reservaId');
   }
@@ -125,8 +125,9 @@ app.get('/scanqr', async (req, res) => {
     }
   };
 
-  await handleQRScan(ctx, reservaId);
+  await handleQRScan(ctx, reservaId, bot);
   // No se debe responder dos veces
+  res.sendStatus(200);
 });
 
 // Iniciar el servidor HTTP
