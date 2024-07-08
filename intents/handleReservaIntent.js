@@ -116,7 +116,9 @@ async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
 
 
     // Generar el código QR con la información de la reserva
-    const qrData = `Nombre de Usuario: ${userName}\nID Reserva: ${reservaId}\nPelícula: ${peliculaId}\nTu reserva vence a la hora: ${caducidad}\nFunción comienza a las: ${fecha} ${hora}\n`;
+    // const qrData = `Nombre de Usuario: ${userName}\nID Reserva: ${reservaId}\nPelícula: ${peliculaId}\nTu reserva vence a la hora: ${caducidad}\nFunción comienza a las: ${fecha} ${hora}\n`;
+    // Generar el código QR con la información de la reserva y una URL de escaneo
+    const qrData = `${process.env.BASE_URL}/scanqr?reservaId=${reservaId}`;
     const qrCode = await QRCode.toBuffer(qrData);
 
     // Responder al usuario con la confirmación, el QR y opciones
