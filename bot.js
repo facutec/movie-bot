@@ -1,3 +1,5 @@
+/*OBSOLETO: Sin uso de express.js, actualmente la aplicación se ejecuta desde 'server.js'*/
+
 require("dotenv").config();
 const { Telegraf, Markup } = require("telegraf");
 const uuid = require("uuid");
