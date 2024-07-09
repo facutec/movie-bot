@@ -58,10 +58,22 @@ bot.on("text", async (ctx) => {
     } else if (intentName === "Despedida") {
       await handleDespedidaIntent(ctx, result);
     } else if (intentName === "PeliculaEspecifica") {
-      return console.log("result\n\n:", result);
-      const nombrePelicula = result.parameters.fields.pelicula.stringValue;
-      console.log("Nombre de la película:", nombrePelicula);
-      await handleBuscarHorarios(ctx, nombrePelicula);
+      console.log("Parameters received for PeliculaEspecifica:", result.parameters.fields);
+      const fields = result.parameters.fields;
+      let nombrePelicula = null;
+      
+      // Verificar ambos parámetros
+      if (fields && fields.Pelicula) {
+        nombrePelicula = fields.Pelicula.stringValue;
+      } else if (fields && fields.nombrePelicula) {
+        nombrePelicula = fields.nombrePelicula.stringValue;
+      }
+
+      if (nombrePelicula) {
+        await handleBuscarHorarios(ctx, nombrePelicula);
+      } else {
+        ctx.reply("Lo siento, no pude entender el nombre de la película.");
+      }
     } else {
       ctx.reply(result.fulfillmentText);
     }
