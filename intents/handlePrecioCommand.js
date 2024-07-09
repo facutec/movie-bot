@@ -22,15 +22,8 @@ async function handlePrecioCommand(ctx) {
       response += `💰 Precio: ${peliculaData.precio}\n\n`;
     });
 
-    // Agregar un botón para ver la cartelera
-    response += "Para ver la cartelera y las promociones, haz clic en el botón a continuación.";
-
-    // Construcción del teclado inline con botones
-    const botones = [
-      Markup.button.callback("Ver Horarios y Promociones", "")
-    ];
-
-    ctx.reply(response, Markup.inlineKeyboard(botones, { columns: 1 }));
+    // Enviar la respuesta al usuario
+    ctx.reply(response);
   } catch (err) {
     console.error("Error al obtener los precios:", err);
     ctx.reply("Lo siento, ha ocurrido un error al obtener los precios.");
