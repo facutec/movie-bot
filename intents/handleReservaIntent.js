@@ -75,7 +75,7 @@ async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
 
     // Crear una nueva reserva
     const userName = user.nombre;
-    const reservaId = `reserva_de_${userName}_${userId}_${peliculaId}_${Timestamp.now().seconds}`;
+    const reservaId = `${userName.substring(0, 3)}_${userId}_${peliculaId}_${Date.now().toString().slice(-5)}`;  // Outpu example: Joh_12345_67890_12345
     const caducidad = new Date(new Date(`${funcionData.fecha} ${funcionData.hora}`).getTime() - 30 * 60000).toISOString();
 
     const reserva = {

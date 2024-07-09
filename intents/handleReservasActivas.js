@@ -23,24 +23,27 @@ async function handleReservasActivas(ctx) {
 
     let response = `🎟️ Tus Reservas Activas 🎟️\n\n`;
 
-    // Iterar sobre las reservas y construir la respuesta
-    for (const doc of reservasSnapshot.docs) {
-      const reserva = doc.data();
-      response += `🎬 Película ID: ${reserva.peliculaId}\n`;
-      response += `📅 Fecha: ${reserva.funcion.fecha}\n`;
-      response += `🕒 Hora: ${reserva.funcion.hora}\n`;
-      response += `⏳ Caducidad: ${reserva.caducidad}\n`;
-      response += `📍 Reserva ID: ${reserva.reservaId}\n\n`;
+   // Iterar sobre las reservas y construir la respuesta
+   for (const doc of reservasSnapshot.docs) {
+    const reserva = doc.data();
+    const caducidad = new Date(reserva.caducidad);
+    const horaCaducidad = caducidad.toTimeString().split(' ')[0];
 
-      // Generar el código QR con la información de la reserva y una URL de escaneo
-      const qrData = `${process.env.BASE_URL}/scanqr?reservaId=${reserva.reservaId}`;
-      const qrCode = await QRCode.toBuffer(qrData);
+    response += `🎬 Película: ${reserva.nombre}\n`;
+    response += `📅 Fecha: ${reserva.funcion.fecha}\n`;
+    response += `🕒 Hora: ${reserva.funcion.hora}\n`;
+    response += `⏳ Caducidad: ${horaCaducidad}\n`;
+    response += `📍 Reserva ID: ${reserva.reservaId}\n\n`;
 
-      // Responder al usuario con la confirmación, el QR y opciones
-      await ctx.replyWithPhoto({ source: qrCode }, {
-        caption: `Reserva ID: ${reserva.reservaId}\n\n Presenta este código QR en la entrada.`
-      });
-    }
+    // Generar el código QR con la información de la reserva y una URL de escaneo
+    const qrData = `${process.env.BASE_URL}/scanqr?reservaId=${reserva.reservaId}`;
+    const qrCode = await QRCode.toBuffer(qrData);
+
+    // Responder al usuario con la confirmación, el QR y opciones
+    await ctx.replyWithPhoto({ source: qrCode }, {
+      caption: `Reserva ID: ${reserva.reservaId}\n\n Presenta este código QR en la entrada.`
+    });
+  }
 
     // Enviar la respuesta al usuario
     ctx.reply(response);
