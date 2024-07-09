@@ -7,12 +7,22 @@ const sendToDialogflow = require("./utils/dialogflowClient");
 const {handleSalirButton, handleReservaActions, handleMoreActions, handleBuscarHorarios, handleReservasActivas, handleCarteleraIntent, handleHorarioIntent, handleReservaIntent, handleHelpIntent, handleDespedidaIntent, handlePrecioCommand, handlePromocionesIntent} = require('./intents');
 const { inactivityMiddleware } = require('./utils/inactivityMiddleware');
 const handleQRScan = require('./utils/handleQRScan'); // Importa handleQRScan
-const MapaCine = require('./utils/obtenerMapaCine');
 
+const ContactarOperador = require('./utils/contactarOperador');
 dotenv.config();
 
 const app = express();
 const bot = new Telegraf(process.env.BOT_TOKEN);
+
+
+// Inicializar el módulo para contactar al operador
+const operatorId = process.env.OPERATOR_ID; // ID del operador, configurable desde el .env
+
+const contactarOperador = new ContactarOperador(bot, operatorId);
+
+
+
+
 
 app.use(bodyParser.json());
 
@@ -96,7 +106,7 @@ bot.on("text", async (ctx) => {
     } else if(intentName === "Ubicacion"){
       //TODO: Implementar la lógica para manejar la ubicación del cine
       const urlDireccionCine = "https://maps.app.goo.gl/EfH2Jaq6cyndxTpQA";
-      ctx.replyWithHTML(`📍 Ubicación del Cine: <a href="${urlDireccionCine}">Ver en el mapa</a>`);
+      await ctx.replyWithHTML(`📍 Ubicación del Cine: <a href="${urlDireccionCine}">Ver en el mapa</a>`);
       await handleMoreActions(ctx);
     } else {
       ctx.reply(result.fulfillmentText);
@@ -182,7 +192,6 @@ bot.action(/horario_(.*)_(.*)_(.*)/, async (ctx) => {
 });
 
 
-//TODO: Añadir el mapa de ubicación del cine
 bot.action("mapa", async (ctx) => {
   const urlDireccionCine = "https://maps.app.goo.gl/EfH2Jaq6cyndxTpQA";
   // const mapaCine = new MapaCine(urlDireccionCine);
@@ -192,6 +201,9 @@ bot.action("mapa", async (ctx) => {
   await handleMoreActions(ctx);
 });
 
+bot.action("operador", async (ctx) => {
+  await contactarOperador.iniciarConversacionConOperador(ctx);
+});
 
 //TODO: Implementar la lógica para manejar el registro de usuarios y enviar al email la entrada
 bot.action('add_email', async (ctx) => {
