@@ -26,10 +26,19 @@ async function handleReservasActivas(ctx) {
    // Iterar sobre las reservas y construir la respuesta
    for (const doc of reservasSnapshot.docs) {
     const reserva = doc.data();
-    const caducidad = new Date(reserva.caducidad);
-    const horaCaducidad = caducidad.toTimeString().split(' ')[0];
 
-    response += `🎬 Película: ${reserva.nombre}\n`;
+    // Consultar los detalles de la película
+    const peliculaDoc = await db.collection("peliculas").doc(reserva.peliculaId).get();
+    if (!peliculaDoc.exists) {
+      console.error(`Película con ID ${reserva.peliculaId} no encontrada.`);
+      continue;
+    }
+    const pelicula = peliculaDoc.data(); // Obtener los datos de la película
+
+    const caducidad = new Date(reserva.caducidad);// Convertir la fecha de caducidad a un objeto Date
+    const horaCaducidad = caducidad.toTimeString().split(' ')[0];// Obtener solo la hora
+
+    response += `🎬 Película: ${pelicula.nombre}\n`;
     response += `📅 Fecha: ${reserva.funcion.fecha}\n`;
     response += `🕒 Hora: ${reserva.funcion.hora}\n`;
     response += `⏳ Caducidad: ${horaCaducidad}\n`;
