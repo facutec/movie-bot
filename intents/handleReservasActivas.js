@@ -1,6 +1,7 @@
 const db = require('../config/firebaseConfig');
 const QRCode = require('qrcode');
 const dotenv = require('dotenv');
+const MapaCine = require('../utils/obtenerMapaCine');
 dotenv.config();
 
 async function handleReservasActivas(ctx) {
