@@ -15,7 +15,8 @@ async function handleHelpIntent(ctx) {
   const botonesAyuda = [
     [Markup.button.callback("Consultar Cartelera", "cartelera")],
     [Markup.button.callback("Precio Entradas", "precio")],
-    [Markup.button.callback("Realizar Reserva", "misReservas")],
+    [Markup.button.callback("Promociones", "promociones")],
+    [Markup.button.callback("Mis reservas", "misReservas")],
     [Markup.button.callback("Mostrar Ayuda", "help")],
     [Markup.button.callback("Finalizar Conversación", "despedida")]
   ];

@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const { Telegraf, Markup } = require("telegraf");
 const uuid = require("uuid");
 const sendToDialogflow = require("./utils/dialogflowClient");
-const { handleCarteleraIntent, handleHorarioIntent, handleReservaIntent, handleHelpIntent, handleDespedidaIntent, handlePrecioCommand } = require('./intents');
+const { handleCarteleraIntent, handleHorarioIntent, handleReservaIntent, handleHelpIntent, handleDespedidaIntent, handlePrecioCommand, handlePromocionesIntent} = require('./intents');
 const { inactivityMiddleware } = require('./utils/inactivityMiddleware');
 const handleQRScan = require('./utils/handleQRScan'); // Importa handleQRScan
 dotenv.config();
@@ -74,11 +74,16 @@ bot.action("cartelera", async (ctx) => {
 bot.action("precio", async (ctx) => {
   console.log("Precio button pressed");
   await handlePrecioCommand(ctx);
+  await handleHelpIntent(ctx);
 });
 
 bot.action("help", async (ctx) => {
   console.log("Ayuda button pressed");
   await handleHelpIntent(ctx);
+});
+bot.action("promociones", async (ctx) => {
+  console.log("PROMOCIONES button pressed");
+  await handlePromocionesIntent(ctx);
 });
 
 bot.action("despedida", async (ctx) => {
@@ -100,6 +105,8 @@ bot.action(/horario_(.*)_(.*)_(.*)/, async (ctx) => {
   await handleReservaIntent(ctx, peliculaId, hora, fecha);
 });
 
+
+//TODO: Implementar la lógica para manejar el registro de usuarios y enviar al email la entrada
 bot.action('add_email', async (ctx) => {
   const user = await registerUser(ctx);
 });
@@ -113,7 +120,6 @@ app.use(bot.webhookCallback('/bot'));
 
 
 // Endpoint para escanear el QR
-//TODO: FIXEAR que envie un mensaje por el chat una vez escaneado el QR
 app.get('/scanqr', async (req, res) => {
   const { reservaId } = req.query; // Usamos req.query para obtener los parámetros en una solicitud GET
   if (!reservaId) {
