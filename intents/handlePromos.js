@@ -1,55 +1,73 @@
 const db = require('../config/firebaseConfig');
-const { Markup } = require('telegraf');
 
-async function handlePromocionesCommand(ctx) {
+async function handlePromocionesIntent(ctx) {
+
   try {
-    console.log("handlePromocionesCommand called");
+    console.log("handlePromocionesIntent called");
 
-    // Obtenemos la QuerySnapshot de la colección 'peliculas'
-    const peliculasSnapshot = await db.collection("peliculas").get();
+      const funcionesSnapshot = await db.collection("funciones").get();
+      const peliculasSnapshot = await db.collection("peliculas").get();
 
-    if (peliculasSnapshot.empty) {
-      ctx.reply("Lo siento, no hay películas disponibles en este momento.");
-      return;
-    }
-
-    // Crear un mapa para almacenar los detalles de las películas
-    const peliculasMap = new Map();
-    peliculasSnapshot.forEach((doc) => {
-      peliculasMap.set(doc.id, doc.data());
-    });
-
-    // Obtenemos la QuerySnapshot de la colección 'funciones'
-    const funcionesSnapshot = await db.collection("funciones").get();
-
-    if (funcionesSnapshot.empty) {
-      ctx.reply("Lo siento, no hay funciones disponibles en este momento.");
-      return;
-    }
-
-    let response = `🎟️ Promociones de las Películas 🎟️\n\n`;
-
-    // Iteramos sobre los documentos de la colección 'funciones' para obtener las promociones
-    funcionesSnapshot.forEach((doc) => {
-      const funcionData = doc.data();
-      const peliculaId = funcionData.peliculaId; // Asumiendo que hay un campo para relacionar con la colección 'peliculas'
-      const peliculaData = peliculasMap.get(peliculaId);
-
-      if (peliculaData) {
-        response += `🎬 ${peliculaData.nombre} 🎬\n`;
-        response += `📅 Fecha: ${funcionData.fecha}\n`;
-        response += `🕒 Hora: ${funcionData.hora}\n`;
-        response += `💰 Precio: ${peliculaData.precio}\n`;
-        response += `🎁 Promoción: ${funcionData.promociones || 'Sin promociones disponibles'}\n\n`;
+      if (funcionesSnapshot.empty) {
+        ctx.reply("Lo siento, no hay funciones disponibles en este momento.");
+        return;
       }
-    });
 
-    // Enviar la respuesta al usuario
-    ctx.reply(response);
-  } catch (err) {
-    console.error("Error al obtener las promociones:", err);
-    ctx.reply("Lo siento, ha ocurrido un error al obtener las promociones.");
+      if (peliculasSnapshot.empty) {
+        ctx.reply("Lo siento, no hay películas disponibles en este momento.");
+        return;
+      }
+    
+
+      
+      const peliculas = {};
+
+      for (const doc of funcionesSnapshot.docs) {
+        const funcionData = doc.data();
+        const peliculaId = funcionData.peliculaId;
+
+        if (!peliculas[peliculaId]) {
+          const peliculaDoc = await db.collection("peliculas").doc(peliculaId).get();
+
+          if (peliculaDoc.exists) {
+            peliculas[peliculaId] = peliculaDoc.data();
+            peliculas[peliculaId].horarios = [];
+            peliculas[peliculaId].promociones = [];
+          }
+        }
+
+        funcionData.funciones.forEach((funcion) => {
+          peliculas[peliculaId].horarios.push({
+            fecha: funcion.fecha,
+            hora: funcion.hora,
+          });
+          peliculas[peliculaId].promociones.push({
+            promociones: funcion.promociones,
+          });
+        });
+
+
+        let response = `🎟️ Promociones de las Películas 🎟️\n\n`;
+
+        for (const peliculaId in peliculas) {
+          const pelicula = peliculas[peliculaId];
+          response += `🎬 ${pelicula.nombre} 🎬\n`;
+          response += `\n\n`;
+          response += `💰 Precio: ${pelicula.precio}\n\n`;
+          response += "\n";
+          response += "🎉 Promociones:\n";
+          pelicula.promociones.forEach((promocion) => {
+            response += `🎉 ${promocion.promociones}\n`;
+          });
+        }
+        
+        // Enviar la respuesta al usuario
+        ctx.reply(response);
+      }
+  } catch (error) {
+    console.error("Error al obtener la cartelera:", error);
+    ctx.reply("Lo siento, ha ocurrido un error inesperado.");
   }
 }
 
-module.exports = handlePromocionesCommand;
+module.exports = handlePromocionesIntent;
