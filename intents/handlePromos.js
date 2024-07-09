@@ -13,16 +13,35 @@ async function handlePromocionesCommand(ctx) {
       return;
     }
 
+    // Crear un mapa para almacenar los detalles de las películas
+    const peliculasMap = new Map();
+    peliculasSnapshot.forEach((doc) => {
+      peliculasMap.set(doc.id, doc.data());
+    });
+
+    // Obtenemos la QuerySnapshot de la colección 'funciones'
+    const funcionesSnapshot = await db.collection("funciones").get();
+
+    if (funcionesSnapshot.empty) {
+      ctx.reply("Lo siento, no hay funciones disponibles en este momento.");
+      return;
+    }
+
     let response = `🎟️ Promociones de las Películas 🎟️\n\n`;
 
-    // Iteramos sobre los documentos de la colección 'peliculas' para obtener las promociones
-    peliculasSnapshot.forEach((doc) => {
-      const peliculaData = doc.data();
-      response += `🎬 ${peliculaData.nombre} 🎬\n`;
-      response += `📅 Fecha: ${peliculaData.fecha}\n`;
-      response += `🕒 Hora: ${peliculaData.hora}\n`;
-      response += `💰 Precio: ${peliculaData.precio}\n`;
-      response += `🎁 Promoción: ${peliculaData.promociones}\n\n`;
+    // Iteramos sobre los documentos de la colección 'funciones' para obtener las promociones
+    funcionesSnapshot.forEach((doc) => {
+      const funcionData = doc.data();
+      const peliculaId = funcionData.peliculaId; // Asumiendo que hay un campo para relacionar con la colección 'peliculas'
+      const peliculaData = peliculasMap.get(peliculaId);
+
+      if (peliculaData) {
+        response += `🎬 ${peliculaData.nombre} 🎬\n`;
+        response += `📅 Fecha: ${funcionData.fecha}\n`;
+        response += `🕒 Hora: ${funcionData.hora}\n`;
+        response += `💰 Precio: ${peliculaData.precio}\n`;
+        response += `🎁 Promoción: ${funcionData.promociones || 'Sin promociones disponibles'}\n\n`;
+      }
     });
 
     // Enviar la respuesta al usuario
