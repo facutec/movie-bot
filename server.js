@@ -58,8 +58,8 @@ bot.on("text", async (ctx) => {
     } else if (intentName === "Despedida") {
       await handleDespedidaIntent(ctx, result);
     } else if (intentName === "PeliculaEspecifica") {
+      return console.log("result\n\n:", result);
       const nombrePelicula = result.parameters.fields.pelicula.stringValue;
-      console.log("result\n\n:", result);
       console.log("Nombre de la película:", nombrePelicula);
       await handleBuscarHorarios(ctx, nombrePelicula);
     } else {
