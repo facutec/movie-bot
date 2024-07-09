@@ -43,7 +43,10 @@ bot.on("text", async (ctx) => {
   try {
     const result = await sendToDialogflow(ctx.message.text, sessionId);
     const intentName = result.intent.displayName; //nombre del INTENT de Dialogflow
+    
+    /*debbugging logs para la terminal*/
     console.log("Intent detected:", intentName);
+    console.log("Parameters received:", result.parameters.fields); 
 
     /* Manejo de acciones según Intent */
     if (intentName === "Funciones") {
@@ -58,15 +61,13 @@ bot.on("text", async (ctx) => {
     } else if (intentName === "Despedida") {
       await handleDespedidaIntent(ctx, result);
     } else if (intentName === "PeliculaEspecifica") {
-      console.log("Parameters received for PeliculaEspecifica:", result.parameters.fields);
+      console.log("Parameters PeliculaEspecifica:", result.parameters.fields);
       const fields = result.parameters.fields;
       let nombrePelicula = null;
-      
-      // Verificar ambos parámetros
-      if (fields && fields.Pelicula) {
-        nombrePelicula = fields.Pelicula.stringValue;
-      } else if (fields && fields.nombrePelicula) {
-        nombrePelicula = fields.nombrePelicula.stringValue;
+
+      // Verificar el parámetro 'pelicula'
+      if (fields && fields.pelicula) {
+        nombrePelicula = fields.pelicula.stringValue;
       }
 
       if (nombrePelicula) {
