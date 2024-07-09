@@ -36,13 +36,13 @@ async function handleReservasActivas(ctx) {
     const pelicula = peliculaDoc.data(); // Obtener los datos de la película
 
     const caducidad = new Date(reserva.caducidad);// Convertir la fecha de caducidad a un objeto Date
-    const horaCaducidad = caducidad.toTimeString().split(' ')[0];// Obtener solo la hora
+    const horaCaducidad = caducidad.toTimeString().split(' ')[0].substring(0, 5);// Obtener solo la hora
 
     response += `🎬 Película: ${pelicula.nombre}\n`;
     response += `📅 Fecha: ${reserva.funcion.fecha}\n`;
     response += `🕒 Hora: ${reserva.funcion.hora}\n`;
     response += `⏳ Caducidad: ${horaCaducidad}\n`;
-    response += `📍 Reserva ID: ${reserva.reservaId}\n\n`;
+    response += `📍 Dirección: \n\n`;
 
     // Generar el código QR con la información de la reserva y una URL de escaneo
     const qrData = `${process.env.BASE_URL}/scanqr?reservaId=${reserva.reservaId}`;
@@ -53,6 +53,11 @@ async function handleReservasActivas(ctx) {
       caption: `Reserva ID: ${reserva.reservaId}\n\n Presenta este código QR en la entrada.`
     });
   }
+
+    const urlDireccionCine = "https://maps.app.goo.gl/EfH2Jaq6cyndxTpQA";
+    const mapaCine = new MapaCine(urlDireccionCine);
+    const urlMapaCine = mapaCine.obtenerUrlMapa();
+    response += `📍 Ubicación del Cine: [Ver en el mapa](${urlMapaCine})\n\n`;
 
     // Enviar la respuesta al usuario
     ctx.reply(response);
