@@ -22,8 +22,6 @@ const contactarOperador = new ContactarOperador(bot, operatorId);
 
 
 
-
-
 app.use(bodyParser.json());
 
 // Middlewares

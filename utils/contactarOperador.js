@@ -8,6 +8,10 @@ class ContactarOperador {
   }
 
   async updateUsuarioEstado(userId, estado) {
+    if (!userId || typeof userId !== 'string' || userId.trim() === '') {
+      throw new Error('User ID is required and must be a non-empty string');
+    }
+
     const userRef = firestore.collection('usuarios').doc(userId);
 
     try {
@@ -19,12 +23,12 @@ class ContactarOperador {
   }
 
   async notificarOperador(ctx) {
-    const userId = ctx.from.id;
+    const userId = ctx.from.id.toString();
     const userName = ctx.from.first_name;
     const userLastName = ctx.from.last_name || '';
 
     const message = `El usuario ${userName} ${userLastName} (${userId}) necesita asistencia.`;
-    
+
     try {
       await this.bot.telegram.sendMessage(this.operatorId, message);
       console.log('Operador notificado.');
@@ -34,14 +38,14 @@ class ContactarOperador {
   }
 
   async iniciarConversacionConOperador(ctx) {
-    const userId = ctx.from.id;
+    const userId = ctx.from.id.toString();
     await this.updateUsuarioEstado(userId, true);
     await ctx.reply("📞 Hablando con un operador... \n\nPor favor, espera un momento.");
     await this.notificarOperador(ctx);
   }
 
   async finalizarConversacionConOperador(ctx) {
-    const userId = ctx.from.id;
+    const userId = ctx.from.id.toString();
     await this.updateUsuarioEstado(userId, false);
     await ctx.reply("La conversación con el operador ha finalizado. ¿En qué más puedo ayudarte?");
   }
