@@ -62,6 +62,13 @@ bot.on("text", async (ctx) => {
       await handleDespedidaIntent(ctx, result);
     } else if (intentName === "PeliculaEspecifica") {
       console.log("Parameters PeliculaEspecifica:", result.parameters.fields);
+      console.log("");
+      console.log("");
+      console.log("");
+      console.log("RESULT:", result);
+      console.log("");
+      console.log("");
+      console.log("");
       const fields = result.parameters.fields;
       let nombrePelicula = null;
 
