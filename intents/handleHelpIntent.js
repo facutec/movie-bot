@@ -4,11 +4,7 @@ async function handleHelpIntent(ctx) {
   // Mensaje de ayuda con los comandos disponibles
   const helpMessage = `
   Aquí tienes las opciones disponibles:
-  /cartelera - Consultar la cartelera
-  /precio - Consultar precio de las entradas
-  /misReservas - Ver mis reservas activas
-  /ayuda - Mostrar esta ayuda
-  /despedida - Finalizar la conversación
+  Selecciona una de las siguientes opciones para obtener más información:
   `;
 
   // Crear botones para cada opción
