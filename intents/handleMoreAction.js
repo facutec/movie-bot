@@ -1,0 +1,17 @@
+const { Markup } = require("telegraf");
+
+async function handleMoreActions(ctx) {
+  // Mensaje preguntando si desea realizar otra acción
+  const message = "¿Deseas realizar otra acción?";
+
+  // Crear botones para confirmar y despedirse
+  const buttons = Markup.inlineKeyboard([
+    [Markup.button.callback("Sí, quiero hacer otra cosa", "help")],
+    [Markup.button.callback("No, adios!", "despedida")]
+  ]);
+
+  // Enviar el mensaje con los botones
+  await ctx.reply(message, buttons);
+}
+
+module.exports = handleMoreActions;

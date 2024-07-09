@@ -4,10 +4,11 @@ const bodyParser = require('body-parser');
 const { Telegraf, Markup } = require("telegraf");
 const uuid = require("uuid");
 const sendToDialogflow = require("./utils/dialogflowClient");
-const { handleBuscarHorarios, handleReservasActivas, handleCarteleraIntent, handleHorarioIntent, handleReservaIntent, handleHelpIntent, handleDespedidaIntent, handlePrecioCommand, handlePromocionesIntent} = require('./intents');
+const {handleMoreActions, handleBuscarHorarios, handleReservasActivas, handleCarteleraIntent, handleHorarioIntent, handleReservaIntent, handleHelpIntent, handleDespedidaIntent, handlePrecioCommand, handlePromocionesIntent} = require('./intents');
 const { inactivityMiddleware } = require('./utils/inactivityMiddleware');
 const handleQRScan = require('./utils/handleQRScan'); // Importa handleQRScan
 const MapaCine = require('./utils/obtenerMapaCine');
+
 dotenv.config();
 
 const app = express();
@@ -102,7 +103,7 @@ bot.action("cartelera", async (ctx) => {
 bot.action("precio", async (ctx) => {
   console.log("Precio button pressed");
   await handlePrecioCommand(ctx);
-  await handleHelpIntent(ctx);
+  await handleMoreActions(ctx);
 });
 
 bot.action("help", async (ctx) => {
@@ -112,13 +113,13 @@ bot.action("help", async (ctx) => {
 bot.action("promociones", async (ctx) => {
   console.log("PROMOCIONES button pressed");
   await handlePromocionesIntent(ctx);
-  await handleHelpIntent(ctx);
+  await handleMoreActions(ctx);
 });
 
 bot.action("misReservas", async (ctx) => {
   console.log("ReservasACTIVAS button pressed");
   await handleReservasActivas(ctx);
-
+  await handleMoreActions(ctx);
 });
 
 
