@@ -121,6 +121,21 @@ bot.action("misReservas", async (ctx) => {
 
 });
 
+bot.action("peliEspecifica", async (ctx) => {
+  console.log("PeliEspecifica button pressed");
+  await ctx.reply("Ingresa el nombre de la película específica que quieres buscar");
+  ctx.session.searchingSpecificMovie = true; // Set a flag to indicate that we are searching for a specific movie
+});
+
+// Handle text messages when searching for a specific movie
+bot.on("text", async (ctx) => {
+  if (ctx.session.searchingSpecificMovie) {
+    const movieName = ctx.message.text;
+    await handleBuscarHorarios(ctx, movieName);
+    ctx.session.searchingSpecificMovie = false; // Reset the flag
+  }
+});
+
 bot.action("despedida", async (ctx) => {
   console.log("Despedida button pressed");
   await handleDespedidaIntent(ctx);
