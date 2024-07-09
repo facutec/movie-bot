@@ -16,7 +16,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 
 
 // Inicializar el módulo para contactar al operador
-const operatorId = process.env.OPERATOR_ID; // ID del operador, configurable desde el .env
+const operatorId = process.env.OPERATOR_ID;
 
 const contactarOperador = new ContactarOperador(bot, operatorId);
 

@@ -1,10 +1,11 @@
-const { Firestore } = require('@google-cloud/firestore');
-const firestore = new Firestore();
+// contactarOperador.js
+const db = require('../config/firebaseConfig');
 
 class ContactarOperador {
   constructor(bot, operatorId) {
     this.bot = bot;
     this.operatorId = operatorId;
+    this.db = db; // Usamos la instancia de Firestore exportada
   }
 
   async updateUsuarioEstado(userId, estado) {
@@ -12,7 +13,7 @@ class ContactarOperador {
       throw new Error('User ID is required and must be a non-empty string');
     }
 
-    const userRef = firestore.collection('usuarios').doc(userId);
+    const userRef = this.db.collection('usuarios').doc(userId);
 
     try {
       await userRef.update({ hablaOperador: estado });
@@ -30,6 +31,7 @@ class ContactarOperador {
     const message = `El usuario ${userName} ${userLastName} (${userId}) necesita asistencia.`;
 
     try {
+      // Enviar mensaje privado al operador
       await this.bot.telegram.sendMessage(this.operatorId, message);
       console.log('Operador notificado.');
     } catch (error) {
