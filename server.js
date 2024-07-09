@@ -81,7 +81,8 @@ bot.on("text", async (ctx) => {
       if (nombrePelicula) {
         await handleBuscarHorarios(ctx, nombrePelicula);
       } else {
-        ctx.reply("Lo siento, no pude entender el nombre de la película.");
+        ctx.reply("Lo siento, no pude encontrar información sobre esa película.");
+        await handleCarteleraIntent(ctx);
       }
     } else {
       ctx.reply(result.fulfillmentText);
