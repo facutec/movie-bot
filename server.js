@@ -140,7 +140,16 @@ bot.action("peliEspecifica", async (ctx) => {
 
 bot.action("despedida", async (ctx) => {
   console.log("Despedida button pressed");
-  await handleDespedidaIntent(ctx);
+
+  try {
+    const sessionId = uuid.v4(); // Genera un ID de sesión único para cada usuario
+    const result = await sendToDialogflow("despedida", sessionId); // Supongamos que el texto del intent es "despedida"
+
+    await handleDespedidaIntent(ctx, result);
+  } catch (error) {
+    console.error("Error handling despedida action: ", error);
+    ctx.reply("Lo siento, hubo un error procesando tu despedida.");
+  }
 });
 
 bot.action(/pelicula_(.*)/, async (ctx) => {
