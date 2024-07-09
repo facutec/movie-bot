@@ -19,6 +19,7 @@
     "express": "^4.19.2",
     "firebase-admin": "^12.2.0",
     "fs": "^0.0.1-security",
+    "fuse.js": "^7.0.0",
     "qrcode": "^1.5.3",
     "telegraf": "^4.16.3"
   },

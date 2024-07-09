@@ -17,6 +17,7 @@ async function handleHelpIntent(ctx) {
     [Markup.button.callback("Precio Entradas", "precio")],
     [Markup.button.callback("Promociones", "promociones")],
     [Markup.button.callback("Mis reservas", "misReservas")],
+    [Markup.button.callback("Ubicación del Cine", "mapa")],
     [Markup.button.callback("Mostrar Ayuda", "help")],
     [Markup.button.callback("Finalizar Conversación", "despedida")]
   ];

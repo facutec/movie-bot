@@ -4,9 +4,10 @@ const bodyParser = require('body-parser');
 const { Telegraf, Markup } = require("telegraf");
 const uuid = require("uuid");
 const sendToDialogflow = require("./utils/dialogflowClient");
-const { handleReservasActivas, handleCarteleraIntent, handleHorarioIntent, handleReservaIntent, handleHelpIntent, handleDespedidaIntent, handlePrecioCommand, handlePromocionesIntent} = require('./intents');
+const { handleBuscarHorarios, handleReservasActivas, handleCarteleraIntent, handleHorarioIntent, handleReservaIntent, handleHelpIntent, handleDespedidaIntent, handlePrecioCommand, handlePromocionesIntent} = require('./intents');
 const { inactivityMiddleware } = require('./utils/inactivityMiddleware');
 const handleQRScan = require('./utils/handleQRScan'); // Importa handleQRScan
+const MapaCine = require('./utils/obtenerMapaCine');
 dotenv.config();
 
 const app = express();
@@ -56,6 +57,11 @@ bot.on("text", async (ctx) => {
       await handleHelpIntent(ctx);
     } else if (intentName === "Despedida") {
       await handleDespedidaIntent(ctx, result);
+    } else if (intentName === "PeliculaEspecifica") {
+      const nombrePelicula = result.parameters.fields.pelicula.stringValue;
+      console.log("result\n\n:", result);
+      console.log("Nombre de la película:", nombrePelicula);
+      await handleBuscarHorarios(ctx, nombrePelicula);
     } else {
       ctx.reply(result.fulfillmentText);
     }
@@ -110,6 +116,16 @@ bot.action(/horario_(.*)_(.*)_(.*)/, async (ctx) => {
   
   // Aquí puedes manejar lo que quieras hacer cuando el usuario selecciona un horario
   await handleReservaIntent(ctx, peliculaId, hora, fecha);
+});
+
+
+//TODO: Añadir el mapa de ubicación del cine
+bot.action("mapa", async (ctx) => {
+  const urlDireccionCine = "https://maps.app.goo.gl/EfH2Jaq6cyndxTpQA";
+  const mapaCine = new MapaCine(urlDireccionCine);
+  const urlMapaCine = mapaCine.obtenerUrlMapa();
+  ctx.replyWithHTML(`📍 Ubicación del Cine: <a href="${urlMapaCine}">Ver en el mapa</a>`);
+  await handleHelpIntent(ctx);
 });
 
 
