@@ -124,11 +124,10 @@ bot.action("misReservas", async (ctx) => {
 
 //TODO: Implementar la lógica para buscar una película específica desde menu
 
-// bot.action("peliEspecifica", async (ctx) => {
-//   console.log("PeliEspecifica button pressed");
-//   await ctx.reply("Ingresa el nombre de la película específica que quieres buscar");
-//   ctx.session.searchingSpecificMovie = true; // Set a flag to indicate that we are searching for a specific movie
-// });
+bot.action("peliEspecifica", async (ctx) => {
+  console.log("PeliEspecifica button pressed");
+  await ctx.reply("Ingresa un mensaje como: ¿Qué horarios hay para 'nombre de la película'? ó ¿A qué hora dan 'nombre de la película'?");
+});
 
 // // Handle text messages when searching for a specific movie
 // bot.on("text", async (ctx) => {
