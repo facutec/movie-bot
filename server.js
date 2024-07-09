@@ -172,10 +172,11 @@ bot.action(/horario_(.*)_(.*)_(.*)/, async (ctx) => {
 //TODO: Añadir el mapa de ubicación del cine
 bot.action("mapa", async (ctx) => {
   const urlDireccionCine = "https://maps.app.goo.gl/EfH2Jaq6cyndxTpQA";
-  const mapaCine = new MapaCine(urlDireccionCine);
-  const urlMapaCine = mapaCine.obtenerUrlMapa();
-  ctx.replyWithHTML(`📍 Ubicación del Cine: <a href="${urlMapaCine}">Ver en el mapa</a>`);
-  await handleHelpIntent(ctx);
+  // const mapaCine = new MapaCine(urlDireccionCine);
+  // const urlMapaCine = mapaCine.obtenerUrlMapa();
+  ctx.replyWithHTML(`📍 Ubicación del Cine: <a href="${urlDireccionCine}">Ver en el mapa</a>`);
+  // await handleHelpIntent(ctx);
+  await handleMoreActions(ctx);
 });
 
 
