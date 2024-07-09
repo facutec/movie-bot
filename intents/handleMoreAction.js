@@ -14,4 +14,27 @@ async function handleMoreActions(ctx) {
   await ctx.reply(message, buttons);
 }
 
-module.exports = handleMoreActions;
+async function handleReservaActions(ctx) {
+  const message = "¿Deseas realizar una reserva?";
+
+  
+  const buttons = Markup.inlineKeyboard([
+    [Markup.button.callback("Sí, quiero reservar", "cartelera")],
+    [Markup.button.callback("No, adios!", "despedida")]
+  ]);
+
+  // Enviar el mensaje con los botones
+  await ctx.reply(message, buttons);
+}
+
+async function handleSalirButton(ctx) {
+  
+  const buttons = Markup.inlineKeyboard([
+    [Markup.button.callback("Salir", "despedida")]
+  ]);
+
+  // Enviar el mensaje con los botones
+  await ctx.reply(buttons);
+}
+
+module.exports = {handleMoreActions, handleReservaActions, handleSalirButton};

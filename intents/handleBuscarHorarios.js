@@ -3,6 +3,9 @@ const BuscadorPeliculas = require('../utils/buscadorPeliculas');
 const handleHorarioIntent = require('./handleHorarioIntent');
 const buscadorPeliculas = new BuscadorPeliculas();
 
+
+/*Buscar horarios por nombre de pelicula*/
+
 async function handleBuscarHorarios(ctx, nombrePelicula) {
   console.log("handleBuscarHorarios called for nombrePelicula:", nombrePelicula);
 
