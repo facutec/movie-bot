@@ -47,6 +47,7 @@ bot.on("text", async (ctx) => {
     /*debbugging logs para la terminal*/
     console.log("Intent detected:", intentName);
     console.log("Parameters received:", result.parameters.fields); 
+    console.log("Parameters received:", JSON.stringify(result.parameters.fields, null, 2)); // Agregar esta línea para depuración
 
     /* Manejo de acciones según Intent */
     if (intentName === "Funciones") {
