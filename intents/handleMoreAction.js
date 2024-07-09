@@ -27,6 +27,8 @@ async function handleReservaActions(ctx) {
   await ctx.reply(message, buttons);
 }
 
+
+//TODO: Arreglar para añadir un botón de salir
 async function handleSalirButton(ctx) {
   // Mensaje de despedida
   const message = "¿Deseas salir?";
