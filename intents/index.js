@@ -7,6 +7,7 @@ const handleHelpIntent = require('./handleHelpIntent');
 const handleDespedidaIntent = require('./handleDespedidaIntent');
 const handlePrecioCommand = require('./handlePrecioCommand');
 const handlePromocionesIntent = require('./handlePromos');
+const handleReservasActivas = require('./handleReservasActivas');
 
 module.exports = {
   handleCarteleraIntent,
@@ -15,5 +16,6 @@ module.exports = {
   handleHelpIntent,
   handleDespedidaIntent,
   handlePrecioCommand,
-  handlePromocionesIntent
+  handlePromocionesIntent,
+  handleReservasActivas
 };

@@ -87,7 +87,8 @@ async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
         fecha
       },
       timestamp: new Date().toISOString(),
-      caducidad
+      caducidad,
+      comprada: false
     };
 
     // Guardar la reserva en Firestore

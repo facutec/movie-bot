@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const { Telegraf, Markup } = require("telegraf");
 const uuid = require("uuid");
 const sendToDialogflow = require("./utils/dialogflowClient");
-const { handleCarteleraIntent, handleHorarioIntent, handleReservaIntent, handleHelpIntent, handleDespedidaIntent, handlePrecioCommand, handlePromocionesIntent} = require('./intents');
+const { handleReservasActivas, handleCarteleraIntent, handleHorarioIntent, handleReservaIntent, handleHelpIntent, handleDespedidaIntent, handlePrecioCommand, handlePromocionesIntent} = require('./intents');
 const { inactivityMiddleware } = require('./utils/inactivityMiddleware');
 const handleQRScan = require('./utils/handleQRScan'); // Importa handleQRScan
 dotenv.config();
@@ -84,6 +84,13 @@ bot.action("help", async (ctx) => {
 bot.action("promociones", async (ctx) => {
   console.log("PROMOCIONES button pressed");
   await handlePromocionesIntent(ctx);
+  await handleHelpIntent(ctx);
+});
+
+bot.action("misReservas", async (ctx) => {
+  console.log("ReservasACTIVAS button pressed");
+  await handleReservasActivas(ctx);
+
 });
 
 bot.action("despedida", async (ctx) => {
