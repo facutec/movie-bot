@@ -9,7 +9,7 @@ const handlePrecioCommand = require('./handlePrecioCommand');
 const handlePromocionesIntent = require('./handlePromos');
 const handleReservasActivas = require('./handleReservasActivas');
 const handleBuscarHorarios = require('./handleBuscarHorarios');
-const handleMoreActions = require('./handleMoreActions');
+const handleMoreActions = require('./handleMoreAction');
 
 module.exports = {
   handleCarteleraIntent,
