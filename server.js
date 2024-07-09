@@ -85,6 +85,19 @@ bot.on("text", async (ctx) => {
         ctx.reply("Lo siento, no pude encontrar información sobre esa película.");
         await handleCarteleraIntent(ctx);
       }
+    } else if(intentName === "Precio"){
+      //TODO: Implementar la lógica para manejar el precio de las entradas
+      await handlePrecioCommand(ctx);
+      await handleMoreActions(ctx);
+    } else if(intentName === "Promociones"){
+      //TODO: Implementar la lógica para manejar las promociones
+      await handlePromocionesIntent(ctx);
+      await handleMoreActions(ctx);
+    } else if(intentName === "Ubicacion"){
+      //TODO: Implementar la lógica para manejar la ubicación del cine
+      const urlDireccionCine = "https://maps.app.goo.gl/EfH2Jaq6cyndxTpQA";
+      ctx.replyWithHTML(`📍 Ubicación del Cine: <a href="${urlDireccionCine}">Ver en el mapa</a>`);
+      await handleMoreActions(ctx);
     } else {
       ctx.reply(result.fulfillmentText);
     }
