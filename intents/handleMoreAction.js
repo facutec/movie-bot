@@ -28,13 +28,15 @@ async function handleReservaActions(ctx) {
 }
 
 async function handleSalirButton(ctx) {
-  
+  // Mensaje de despedida
+  const message = "¿Deseas salir?";
+
   const buttons = Markup.inlineKeyboard([
     [Markup.button.callback("Salir", "despedida")]
   ]);
 
   // Enviar el mensaje con los botones
-  await ctx.reply(buttons);
+  await ctx.reply(message, buttons);
 }
 
 module.exports = {handleMoreActions, handleReservaActions, handleSalirButton};
