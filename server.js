@@ -7,6 +7,7 @@ const sendToDialogflow = require("./utils/dialogflowClient");
 const {handleSalirButton, handleReservaActions, handleMoreActions, handleBuscarHorarios, handleReservasActivas, handleCarteleraIntent, handleHorarioIntent, handleReservaIntent, handleHelpIntent, handleDespedidaIntent, handlePrecioCommand, handlePromocionesIntent} = require('./intents');
 const { inactivityMiddleware } = require('./utils/inactivityMiddleware');
 const handleQRScan = require('./utils/handleQRScan'); // Importa handleQRScan
+const db = require('./config/firebaseConfig');
 
 const ContactarOperador = require('./utils/contactarOperador');
 dotenv.config();
