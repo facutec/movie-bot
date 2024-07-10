@@ -41,18 +41,18 @@ async function handleSalirButton(ctx) {
   await ctx.reply(message, buttons);
 }
 
-async function handleReservasActivas(ctx) {
+// async function handleReservasActivas(ctx) {
   
-  const message = "¿Deseas ver tus reservas activa?";
+//   const message = "¿Deseas ver tus reservas activa?";
   
-  // Crear botones para confirmar y despedirse
-  const buttons = Markup.inlineKeyboard([
-    [Markup.button.callback("Sí, ver mis reservas", "misReservas")],
-    [Markup.button.callback("No, quiero hacer otra cosa", "help")],
-    [Markup.button.callback("No, adios!", "despedida")]
-  ]);
+//   // Crear botones para confirmar y despedirse
+//   const buttons = Markup.inlineKeyboard([
+//     [Markup.button.callback("Sí, ver mis reservas", "misReservas")],
+//     [Markup.button.callback("No, quiero hacer otra cosa", "help")],
+//     [Markup.button.callback("No, adios!", "despedida")]
+//   ]);
   
-  // Enviar el mensaje con los botones
-  await ctx.reply(message, buttons);
-}
-module.exports = {handleMoreActions, handleReservaActions, handleSalirButton, handleReservasActivas};
+//   // Enviar el mensaje con los botones
+//   await ctx.reply(message, buttons);
+// }
+module.exports = {handleMoreActions, handleReservaActions, handleSalirButton};
