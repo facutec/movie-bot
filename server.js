@@ -63,28 +63,29 @@ bot.on("text", async (ctx) => {
     } else if (intentName === "Despedida") {
       await handleDespedidaIntent(ctx, result);
     } else if (intentName === "PeliculaEspecifica") {
-      console.log("Parameters PeliculaEspecifica:", result.parameters.fields);
-      console.log("");
-      console.log("");
-      console.log("");
-      console.log("RESULT:", result);
-      console.log("");
-      console.log("");
-      console.log("");
-      const fields = result.parameters.fields;
-      let nombrePelicula = null;
+        console.log("Parameters PeliculaEspecifica:", result.parameters.fields);
+        console.log("");
+        console.log("");
+        console.log("");
+        console.log("RESULT:", result);
+        console.log("");
+        console.log("");
+        console.log("");
+        
+        const fields = result.parameters.fields;
+        let nombrePelicula = null;
 
-      // Verificar el parámetro 'pelicula'
-      if (fields && fields.pelicula) {
-        nombrePelicula = fields.pelicula.stringValue;
-      }
+        // Verificar el parámetro 'pelicula'
+        if (fields && fields.pelicula && fields.pelicula.listValue && fields.pelicula.listValue.values.length > 0) {
+          nombrePelicula = fields.pelicula.listValue.values[0].stringValue;
+    }
 
-      if (nombrePelicula) {
-        await handleBuscarHorarios(ctx, nombrePelicula);
-      } else {
-        ctx.reply("Lo siento, no pude encontrar información sobre esa película.");
-        await handleCarteleraIntent(ctx);
-      }
+        if (nombrePelicula) {
+          await handleBuscarHorarios(ctx, nombrePelicula);
+        } else {
+          ctx.reply("Lo siento, no pude encontrar información sobre esa película.");
+          await handleCarteleraIntent(ctx);
+        }
     } else if(intentName === "Precio"){
       //TODO: Implementar la lógica para manejar el precio de las entradas
       await handlePrecioCommand(ctx);
