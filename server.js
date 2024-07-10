@@ -117,7 +117,6 @@ bot.action("cartelera", async (ctx) => {
 bot.action("precio", async (ctx) => {
   console.log("Precio button pressed");
   await handlePrecioCommand(ctx);
-  await handleMoreActions(ctx);
 });
 
 bot.action("help", async (ctx) => {
@@ -127,7 +126,6 @@ bot.action("help", async (ctx) => {
 bot.action("promociones", async (ctx) => {
   console.log("PROMOCIONES button pressed");
   await handlePromocionesIntent(ctx);
-  await handleMoreActions(ctx);
 });
 
 bot.action("misReservas", async (ctx) => {
@@ -187,7 +185,7 @@ bot.action("mapa", async (ctx) => {
   const urlDireccionCine = "https://maps.app.goo.gl/EfH2Jaq6cyndxTpQA";
   // const mapaCine = new MapaCine(urlDireccionCine);
   // const urlMapaCine = mapaCine.obtenerUrlMapa();
-  ctx.replyWithHTML(`📍 Ubicación del Cine: <a href="${urlDireccionCine}">Ver en el mapa</a>`);
+  await ctx.replyWithHTML(`📍 Ubicación del Cine: <a href="${urlDireccionCine}">Ver en el mapa</a>`);
   // await handleHelpIntent(ctx);
   await handleMoreActions(ctx);
 });

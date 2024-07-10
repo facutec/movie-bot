@@ -1,4 +1,5 @@
 const db = require('../config/firebaseConfig');
+const handleMoreActions = require('./index');
 const { Markup } = require('telegraf');
 
 async function handlePrecioCommand(ctx) {
@@ -23,7 +24,8 @@ async function handlePrecioCommand(ctx) {
     });
 
     // Enviar la respuesta al usuario
-    ctx.reply(response);
+    await ctx.reply(response);
+    await handleMoreActions(ctx);
   } catch (err) {
     console.error("Error al obtener los precios:", err);
     ctx.reply("Lo siento, ha ocurrido un error al obtener los precios.");
