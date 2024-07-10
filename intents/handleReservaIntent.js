@@ -4,6 +4,7 @@ const { Markup } = require('telegraf');
 const QRCode = require('qrcode');
 const { FieldValue, Timestamp } = require('firebase-admin/firestore');
 const dotenv = require('dotenv');
+const { handleReservasActivas } = require('./handleReservasActivas');
 dotenv.config();
 
 // Función para verificar si el usuario está registrado
@@ -44,6 +45,7 @@ async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
     // Verificar si el usuario ya tiene 2 reservas activas
     if (user.reservas.length >= 2) {
       ctx.reply("Lo siento, ya has alcanzado el límite máximo de 2 reservas activas.");
+      await handleReservasActivas(ctx);
       return;
     }
 
