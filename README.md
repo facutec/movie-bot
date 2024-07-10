@@ -47,7 +47,7 @@ Los resultados de estas pruebas están documentados detalladamente en el siguien
 [Documentación de Pruebas de Usabilidad](InsertLink)
 
 ## Uso
-Para comenzar a usar MovieBot, busca a Cine Mercedes Digital en Telegram o sigue este [link directo](t.me/PruebitaDeBot). 
+Para comenzar a usar MovieBot, sigue este [link directo](t.me/PruebitaDeBot). t.me/PruebitaDeBot (Lamento el poco profesionalismo en el nombre)
 Ten en cuenta que **puede tardar un minuto en activarse por primera vez** debido al estado de **inactividad en Render**.
 
 ## Contribuciones
