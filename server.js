@@ -44,74 +44,92 @@ bot.start(async (ctx) => {
   await handleHelpIntent(ctx);
 });
 
+// Comando para registrar al operador
+bot.command('registrar_operador', async (ctx) => {
+  const operatorId = ctx.from.id.toString();
+  try {
+    const operadorRef = db.collection('operadores').doc('default');
+    await operadorRef.set({ telegramId: operatorId });
+    ctx.reply('Operador registrado con éxito.');
+  } catch (error) {
+    console.error('Error registrando al operador:', error);
+    ctx.reply('Error registrando al operador.');
+  }
+});
+
 // Manejar los mensajes de texto
 bot.on("text", async (ctx) => {
-  console.log("Text received:", ctx.message.text);
-  const sessionId = uuid.v4(); // Genera un ID de sesión único para cada usuario
+  const userId = ctx.from.id.toString();
+  const operadorRef = db.collection('operadores').doc('default');
+  const operadorDoc = await operadorRef.get();
+  const operatorId = operadorDoc.data().telegramId;
 
-  try {
-    const result = await sendToDialogflow(ctx.message.text, sessionId);
-    const intentName = result.intent.displayName; //nombre del INTENT de Dialogflow
-    
-    /*debbugging logs para la terminal*/
-    console.log("Intent detected:", intentName);
-    console.log("Parameters received:", result.parameters.fields); 
-    console.log("Parameters received:", JSON.stringify(result.parameters.fields, null, 2)); // Agregar esta línea para depuración
-
-    /* Manejo de acciones según Intent */
-    if (intentName === "Funciones") {
-      await handleCarteleraIntent(ctx);
-    } else if (intentName === "SaludoInicial") {
-      const userName = ctx.from.first_name;
-      const saludoPersonalizado = result.fulfillmentText.replace("[nombre_usuario]", userName);
-      ctx.reply(saludoPersonalizado);
-      await handleHelpIntent(ctx);
-    } else if (intentName === "help") {
-      await handleHelpIntent(ctx);
-    } else if (intentName === "Despedida") {
-      await handleDespedidaIntent(ctx, result);
-    } else if (intentName === "PeliculaEspecifica") {
-      console.log("Parameters PeliculaEspecifica:", result.parameters.fields);
-      console.log("");
-      console.log("");
-      console.log("");
-      console.log("RESULT:", result);
-      console.log("");
-      console.log("");
-      console.log("");
-      const fields = result.parameters.fields;
-      let nombrePelicula = null;
-
-      // Verificar el parámetro 'pelicula'
-      if (fields && fields.pelicula) {
-        nombrePelicula = fields.pelicula.stringValue;
-      }
-
-      if (nombrePelicula) {
-        await handleBuscarHorarios(ctx, nombrePelicula);
-      } else {
-        ctx.reply("Lo siento, no pude encontrar información sobre esa película.");
-        await handleCarteleraIntent(ctx);
-      }
-    } else if(intentName === "Precio"){
-      //TODO: Implementar la lógica para manejar el precio de las entradas
-      await handlePrecioCommand(ctx);
-      await handleMoreActions(ctx);
-    } else if(intentName === "Promociones"){
-      //TODO: Implementar la lógica para manejar las promociones
-      await handlePromocionesIntent(ctx);
-      await handleMoreActions(ctx);
-    } else if(intentName === "Ubicacion"){
-      //TODO: Implementar la lógica para manejar la ubicación del cine
-      const urlDireccionCine = "https://maps.app.goo.gl/EfH2Jaq6cyndxTpQA";
-      await ctx.replyWithHTML(`📍 Ubicación del Cine: <a href="${urlDireccionCine}">Ver en el mapa</a>`);
-      await handleMoreActions(ctx);
-    } else {
-      ctx.reply(result.fulfillmentText);
+  // Verificar si el mensaje proviene del operador o del usuario
+  if (ctx.from.id.toString() === operatorId) {
+    // Mensaje del operador al usuario
+    const conversationRef = db.collection('conversaciones').where('operatorId', '==', operatorId);
+    const conversationSnapshot = await conversationRef.get();
+    if (!conversationSnapshot.empty) {
+      const conversation = conversationSnapshot.docs[0].data();
+      await bot.telegram.sendMessage(conversation.userId, `Operador: ${ctx.message.text}`);
     }
-  } catch (error) {
-    console.error("Error handling message: ", error);
-    ctx.reply("Lo siento, hubo un error procesando tu mensaje.");
+  } else {
+    // Mensaje del usuario al operador
+    const userRef = db.collection('usuarios').doc(userId);
+    const userDoc = await userRef.get();
+    const userData = userDoc.data();
+    if (userData && userData.hablaOperador) {
+      await bot.telegram.sendMessage(operatorId, `Mensaje de ${ctx.from.first_name}: ${ctx.message.text}`);
+    } else {
+      // Procesar el mensaje con Dialogflow si no está hablando con el operador
+      const sessionId = uuid.v4();
+      try {
+        const result = await sendToDialogflow(ctx.message.text, sessionId);
+        const intentName = result.intent.displayName;
+        
+        if (intentName === "Funciones") {
+          await handleCarteleraIntent(ctx);
+        } else if (intentName === "SaludoInicial") {
+          const userName = ctx.from.first_name;
+          const saludoPersonalizado = result.fulfillmentText.replace("[nombre_usuario]", userName);
+          ctx.reply(saludoPersonalizado);
+          await handleHelpIntent(ctx);
+        } else if (intentName === "help") {
+          await handleHelpIntent(ctx);
+        } else if (intentName === "Despedida") {
+          await handleDespedidaIntent(ctx, result);
+        } else if (intentName === "PeliculaEspecifica") {
+          const fields = result.parameters.fields;
+          let nombrePelicula = null;
+
+          if (fields && fields.pelicula) {
+            nombrePelicula = fields.pelicula.stringValue;
+          }
+
+          if (nombrePelicula) {
+            await handleBuscarHorarios(ctx, nombrePelicula);
+          } else {
+            ctx.reply("Lo siento, no pude encontrar información sobre esa película.");
+            await handleCarteleraIntent(ctx);
+          }
+        } else if (intentName === "Precio") {
+          await handlePrecioCommand(ctx);
+          await handleMoreActions(ctx);
+        } else if (intentName === "Promociones") {
+          await handlePromocionesIntent(ctx);
+          await handleMoreActions(ctx);
+        } else if (intentName === "Ubicacion") {
+          const urlDireccionCine = "https://maps.app.goo.gl/EfH2Jaq6cyndxTpQA";
+          await ctx.replyWithHTML(`📍 Ubicación del Cine: <a href="${urlDireccionCine}">Ver en el mapa</a>`);
+          await handleMoreActions(ctx);
+        } else {
+          ctx.reply(result.fulfillmentText);
+        }
+      } catch (error) {
+        console.error("Error handling message: ", error);
+        ctx.reply("Lo siento, hubo un error procesando tu mensaje.");
+      }
+    }
   }
 });
 

@@ -1,26 +1,10 @@
-// contactarOperador.js
 const db = require('../config/firebaseConfig');
+const Users = require('./users');
 
 class ContactarOperador {
-  constructor(bot, operatorId) {
+  constructor(bot) {
     this.bot = bot;
-    this.operatorId = operatorId;
     this.db = db; // Usamos la instancia de Firestore exportada
-  }
-
-  async updateUsuarioEstado(userId, estado) {
-    if (!userId || typeof userId !== 'string' || userId.trim() === '') {
-      throw new Error('User ID is required and must be a non-empty string');
-    }
-
-    const userRef = this.db.collection('usuarios').doc(userId);
-
-    try {
-      await userRef.update({ hablaOperador: estado });
-      console.log(`Estado actualizado para el usuario ${userId}: ${estado}`);
-    } catch (error) {
-      console.error(`Error actualizando estado para el usuario ${userId}: `, error);
-    }
   }
 
   async notificarOperador(ctx) {
@@ -31,8 +15,13 @@ class ContactarOperador {
     const message = `El usuario ${userName} ${userLastName} (${userId}) necesita asistencia.`;
 
     try {
+      // Obtener el ID del operador de Firestore
+      const operadorRef = this.db.collection('operadores').doc('default');
+      const operadorDoc = await operadorRef.get();
+      const operatorId = operadorDoc.data().telegramId;
+
       // Enviar mensaje privado al operador
-      await this.bot.telegram.sendMessage(this.operatorId, message);
+      await this.bot.telegram.sendMessage(operatorId, message);
       console.log('Operador notificado.');
     } catch (error) {
       console.error('Error notificando al operador: ', error);
@@ -41,14 +30,22 @@ class ContactarOperador {
 
   async iniciarConversacionConOperador(ctx) {
     const userId = ctx.from.id.toString();
-    await this.updateUsuarioEstado(userId, true);
+    
+    // Verificar si el usuario está registrado
+    let user = await Users.checkUserRegistered(userId);
+    if (!user) {
+      // Registra al usuario si no está en la base de datos
+      user = await Users.registerUser(ctx.from);
+    }
+
+    await Users.updateUsuarioEstado(userId, true);
     await ctx.reply("📞 Hablando con un operador... \n\nPor favor, espera un momento.");
     await this.notificarOperador(ctx);
   }
 
   async finalizarConversacionConOperador(ctx) {
     const userId = ctx.from.id.toString();
-    await this.updateUsuarioEstado(userId, false);
+    await Users.updateUsuarioEstado(userId, false);
     await ctx.reply("La conversación con el operador ha finalizado. ¿En qué más puedo ayudarte?");
   }
 }
