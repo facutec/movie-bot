@@ -1,5 +1,5 @@
 const db = require('../config/firebaseConfig');
-
+const {handleMoreActions, handleReservaActions, handleSalirButton} = require('./handleMoreAction');
 async function handlePromocionesIntent(ctx) {
   try {
     console.log("handlePromocionesIntent called");
@@ -53,7 +53,8 @@ async function handlePromocionesIntent(ctx) {
     });
 
     // Enviar la respuesta al usuario
-    ctx.reply(response);
+    await ctx.reply(response);
+    await handleMoreActions(ctx);
   } catch (error) {
     console.error("Error al obtener la cartelera:", error);
     ctx.reply("Lo siento, ha ocurrido un error inesperado.");

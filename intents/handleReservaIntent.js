@@ -4,8 +4,30 @@ const { Markup } = require('telegraf');
 const QRCode = require('qrcode');
 const { FieldValue, Timestamp } = require('firebase-admin/firestore');
 const dotenv = require('dotenv');
-const Users = require('../utils/users');
+const handleReservasActivas = require('./handleReservasActivas');
+const handleMoreActions = require('./handleMoreAction');
 dotenv.config();
+
+// Función para verificar si el usuario está registrado
+async function checkUserRegistered(userId) {
+  const userSnapshot = await db.collection("usuarios").doc(userId).get();
+  return userSnapshot.exists ? userSnapshot.data() : null;
+}
+
+// Función para registrar un nuevo usuario
+async function registerUser(userCtx) {
+  const newUser = {
+    userId: userCtx.id.toString(),
+    nombre: userCtx.first_name,  // Asumiendo que el nombre de Telegram se usará como nombre
+    telegramId: userCtx.id.toString(),  // ID de Telegram
+    email: "",  // Dejar vacío o pedir al usuario que proporcione un email
+    reservas: []  // Inicializar con un arreglo vacío
+  };
+
+  await db.collection("usuarios").doc(newUser.userId).set(newUser);
+  return newUser;
+}
+
 
 // Función asíncrona para manejar la reserva
 async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
@@ -14,16 +36,18 @@ async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
   try {
     // Comprobar si el usuario está registrado
     const userId = ctx.from.id.toString();
-    let user = await Users.checkUserRegistered(userId);
+    let user = await checkUserRegistered(userId);
   
     if (!user) {
       // Registra al usuario si no está en la base de datos y asigna el usuario registrado
-      user = await Users.registerUser(ctx.from);
+      user = await registerUser(ctx.from);
     }
 
     // Verificar si el usuario ya tiene 2 reservas activas
     if (user.reservas.length >= 2) {
       ctx.reply("Lo siento, ya has alcanzado el límite máximo de 2 reservas activas.");
+      await handleReservasActivas(ctx);
+      await handleMoreActions(ctx);
       return;
     }
 
@@ -55,7 +79,7 @@ async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
 
     // Crear una nueva reserva
     const userName = user.nombre;
-    const reservaId = `${userName.substring(0, 3)}_${userId}_${peliculaId}_${Date.now().toString().slice(-5)}`;  // Output example: Joh_12345_67890_12345
+    const reservaId = `${userName.substring(0, 3)}_${userId}_${peliculaId}_${Date.now().toString().slice(-5)}`;  // Outpu example: Joh_12345_67890_12345
     const caducidad = new Date(new Date(`${funcionData.fecha} ${funcionData.hora}`).getTime() - 30 * 60000).toISOString();
 
     const reserva = {
@@ -116,5 +140,6 @@ async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
     ctx.reply("Lo siento, hubo un error al realizar la reserva.");
   }
 }
+
 
 module.exports = handleReservaIntent;
