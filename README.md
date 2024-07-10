@@ -58,3 +58,16 @@ Los resultados de estas pruebas están documentados detalladamente en el siguien
 ## Consideraciones Finales:
 
 - El proyecto está diseñado con fines educativos y aunque se basa en una problemática real y el nombre del cine es real, no utiliza datos reales más allá de la ubicación y el nombre del cine.
+
+## Licencias
+
+MovieBot se ha desarrollado utilizando tecnologías y servicios que ofrecen licencias gratuitas, lo que permite un acceso y uso sin costo pero puede influir en el rendimiento. Las tecnologías clave incluyen:
+
+- **Render.com**: Utilizado para el despliegue y hosting del bot en producción. El plan gratuito puede causar tiempos de inactividad cuando el bot no se usa frecuentemente, lo que resulta en un arranque lento al reactivarse.
+- **Dialogflow**: Para el procesamiento de lenguaje natural, operando bajo la capa gratuita que puede limitar algunas funcionalidades avanzadas y la velocidad de las respuestas.
+- **Firestore**: Como nuestra base de datos NoSQL, donde el plan gratuito puede tener limitaciones en términos de operaciones de lectura y escritura por segundo.
+
+### Consideraciones de Rendimiento
+Debido al uso de estas licencias gratuitas, los usuarios pueden experimentar una ligera demora en las respuestas del bot, especialmente durante las primeras interacciones o después de períodos de inactividad. 
+Lamento los inconvenientes, y por favor, paciencia y comprensión. Estas demoras son resultado directo de maximizar la accesibilidad y minimizar los costos operativos.
+
