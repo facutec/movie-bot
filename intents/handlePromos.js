@@ -1,5 +1,5 @@
 const db = require('../config/firebaseConfig');
-const handleMoreActions = require('./index');
+const {handleMoreActions, handleReservaActions, handleSalirButton} = require('./handleMoreAction');
 async function handlePromocionesIntent(ctx) {
   try {
     console.log("handlePromocionesIntent called");
