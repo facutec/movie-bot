@@ -1,5 +1,5 @@
 const db = require('../config/firebaseConfig');
-const handleMoreActions = require('./index');
+const {handleMoreActions} = require('./index');
 const { Markup } = require('telegraf');
 
 async function handlePrecioCommand(ctx) {
