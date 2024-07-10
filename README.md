@@ -56,6 +56,7 @@ Los resultados de estas pruebas están documentados detalladamente en el siguien
 
 ## Contribuciones
 - Las contribuciones son bienvenidas. Si deseas contribuir, por favor, haz un fork del repositorio, realiza tus cambios y envía un pull request.
+- Si bien **actualmente NO aceptaré ninguna**, no estoy cerrado a ver mejoras en mi proyecto. :)
 
 ## Consideraciones Finales:
 
