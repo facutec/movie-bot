@@ -36,7 +36,7 @@ Este bot busca transformar la experiencia tradicional de ir al cine en una exper
 
 ## Casos de Prueba
 
-Se realizaron 2 ciclos de pruebas para asegurar la funcionalidad y robustez del MovieBot. 
+-Se realizaron 2 ciclos de pruebas para asegurar la funcionalidad y robustez del MovieBot. 
 Los resultados de estas pruebas están documentados detalladamente en el siguiente enlace:
 
 [Documentación de Casos de Prueba](https://docs.google.com/spreadsheets/d/1HAoWx55wt1t7ylIFgOSmdqvVD9SxegrEJlWSc_UjgoE/edit?usp=sharing)
@@ -46,12 +46,14 @@ Los resultados de estas pruebas están documentados detalladamente en el siguien
 
 [Documentación de Pruebas de Usabilidad](InsertLink)
 
-## Uso
-Para comenzar a usar MovieBot, sigue este [link directo](t.me/PruebitaDeBot). t.me/PruebitaDeBot (Lamento el poco profesionalismo en el nombre)
-Ten en cuenta que **puede tardar un minuto en activarse por primera vez** debido al estado de **inactividad en Render**.
+### Uso
+- Para comenzar a usar MovieBot y experimentar una nueva forma de interactuar con el Cine Mercedes Digital, simplemente sigue este [link directo a MovieBot en Telegram](https://t.me/PruebitaDeBot).
+
+### Nota Importante
+- El bot puede tardar hasta un minuto en activarse por primera vez debido al estado de inactividad en Render. Esto solo ocurre durante el primer inicio o cuando el bot ha estado inactivo por un tiempo prolongado. Agradecemos tu paciencia y comprensión.
 
 ## Contribuciones
-Las contribuciones son bienvenidas. Si deseas contribuir, por favor, haz un fork del repositorio, realiza tus cambios y envía un pull request.
+- Las contribuciones son bienvenidas. Si deseas contribuir, por favor, haz un fork del repositorio, realiza tus cambios y envía un pull request.
 
 ## Consideraciones Finales:
 
