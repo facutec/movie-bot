@@ -36,6 +36,21 @@ Este bot busca transformar la experiencia tradicional de ir al cine en una exper
 - **Firestore**: Como base de datos NoSQL para almacenar datos de usuario, reservas, peliculas y funciones.
 - **Render.com**: Para el despliegue y hosting del bot en producción.
 
+#Herramientas de Gestión y Desarrollo
+
+### Gestión de Proyecto
+Para la organización y gestión del proyecto MovieBot, se utilizaron las siguientes herramientas que permitieron un seguimiento eficiente y una gestión ágil del desarrollo:
+
+- **Trello**: Utilizado para la gestión de tareas con tableros KanBan, ayudando a mantener un seguimiento claro de las etapas del proyecto, tareas pendientes y progreso en tiempo real.
+- **Google Keep**: Empleado para tomar notas rápidas y organizar ideas clave y requisitos durante las fases de brainstorming y desarrollo.
+
+### Entorno de Desarrollo
+- **Visual Studio Code (VSCode)**: Este editor de código fue utilizado para todo el desarrollo del backend y la integración con APIs. VSCode proporciona herramientas poderosas que facilitaron la escritura de código, la depuración y la gestión del repositorio.
+
+### Herramientas de Desarrollo Avanzadas
+- **GPT**: Utilizado para acelerar el aprendizaje y adaptación a nuevas tecnologías no previamente utilizadas, facilitando una comprensión más rápida y efectiva.
+- **Github Copilot**: Empleado como asistente de autocompletado, mejorando la eficiencia en la escritura de código y reduciendo la probabilidad de errores.
+
 ## Casos de Prueba
 
 -Se realizaron 2 ciclos de pruebas para asegurar la funcionalidad y robustez del MovieBot. 
