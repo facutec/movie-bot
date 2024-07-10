@@ -15,7 +15,7 @@ Este bot busca transformar la experiencia tradicional de ir al cine en una exper
 - **Consulta de Cartelera**: Verifica las películas disponibles y sus horarios.
 - **Reservas de Entradas**: Reserva de entradas tus entradas en pocos segundos generando un QR que luego, en la vida real, permite ser escaneado y simular la "compra" del mismo.
 - **Ver mis reservas**: Permite ver las reservas activas que tienes desplegando el QR con su fecha de caducidad.
-- **Ubicación del cine: ** Permite obtener la ubicación del cine para saber como llegar
+- **Ubicación del cine:** Permite obtener la ubicación del cine para saber como llegar
 - **Promociones y Descuentos**: Accede a promociones exclusivas y recibe recomendaciones basadas en tus visitas anteriores.
 - **Precio Entradas**: Obtener el precio de las entradas por película
 - **Buscar una pelicula en particular**: Permite, utilizando lenguaje natural gracias a DialogFlow, ingresar '¿A qué hora dan Inception?' y obtendrás los horarios de las funciones con unos botones desplegables para utilizar
@@ -33,6 +33,18 @@ Este bot busca transformar la experiencia tradicional de ir al cine en una exper
 - **Dialogflow**: Para el procesamiento de lenguaje natural.
 - **Firestore**: Como base de datos NoSQL para almacenar datos de usuario, reservas, peliculas y funciones.
 - **Render.com**: Para el despliegue y hosting del bot en producción.
+
+## Casos de Prueba
+
+Se realizaron 2 ciclos de pruebas para asegurar la funcionalidad y robustez del MovieBot. 
+Los resultados de estas pruebas están documentados detalladamente en el siguiente enlace:
+
+[Documentación de Casos de Prueba](https://docs.google.com/spreadsheets/d/1HAoWx55wt1t7ylIFgOSmdqvVD9SxegrEJlWSc_UjgoE/edit?usp=sharing)
+
+## Pruebas de Usabilidad | Usuario Final: 
+- Además de la ejecución propia del producto para asegurar su funcionalidad, antes de lanzarlo al mercado, consideré necesario el feedback de los usuarios finales, a continuación puedes encontrar el informe de los mismos:
+
+[Documentación de Pruebas de Usabilidad](InsertLink)
 
 ## Uso
 Para comenzar a usar MovieBot, busca a Cine Mercedes Digital en Telegram o sigue este [link directo](t.me/PruebitaDeBot). 
