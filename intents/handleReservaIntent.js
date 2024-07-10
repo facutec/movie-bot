@@ -47,8 +47,7 @@ async function handleReservaIntent(ctx, peliculaId, hora, fecha) {
     if (user.reservas.length >= 2) {
       ctx.reply("Lo siento, ya has alcanzado el límite máximo de 2 reservas activas.");
       await handleReservasActivas(ctx);
-      await handleMoreActions(ctx);
-      return;
+      return await handleMoreActions(ctx);
     }
 
     // Obtener el documento de la función específica
