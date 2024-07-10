@@ -4,7 +4,7 @@ const { Markup } = require('telegraf');
 const QRCode = require('qrcode');
 const { FieldValue, Timestamp } = require('firebase-admin/firestore');
 const dotenv = require('dotenv');
-const { handleReservasActivas } = require('./handleReservasActivas');
+const handleReservasActivas = require('./handleReservasActivas');
 dotenv.config();
 
 // Función para verificar si el usuario está registrado
