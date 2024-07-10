@@ -1,5 +1,5 @@
 # MovieBot para Cine Mercedes Digital (Desafío HeyNow!)
-_**By**: Facundo Rodriguez
+__**By**: Facundo Rodriguez_
 
 ## Descripción
 MovieBot es un bot de Telegram diseñado para mejorar la experiencia de los clientes del Cine Mercedes. 
