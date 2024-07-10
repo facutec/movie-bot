@@ -71,7 +71,7 @@ bot.on("text", async (ctx) => {
         console.log("");
         console.log("");
         console.log("");
-        
+
         const fields = result.parameters.fields;
         let nombrePelicula = null;
 
@@ -141,14 +141,6 @@ bot.action("peliEspecifica", async (ctx) => {
   await ctx.reply("Ingresa un mensaje como: ¿Qué horarios hay para 'nombre de la película'? ó ¿A qué hora dan 'nombre de la película'?");
 });
 
-// // Handle text messages when searching for a specific movie
-// bot.on("text", async (ctx) => {
-//   if (ctx.session.searchingSpecificMovie) {
-//     const movieName = ctx.message.text;
-//     await handleBuscarHorarios(ctx, movieName);
-//     ctx.session.searchingSpecificMovie = false; // Reset the flag
-//   }
-// });
 
 bot.action("despedida", async (ctx) => {
   console.log("Despedida button pressed");
@@ -162,6 +154,12 @@ bot.action("despedida", async (ctx) => {
     console.error("Error handling despedida action: ", error);
     ctx.reply("Lo siento, hubo un error procesando tu despedida.");
   }
+});
+
+bot.action("operador", async (ctx) => {
+  console.log("Operador button pressed");
+  await ctx.reply("Un operador se pondrá en contacto contigo en breve. ¿En qué más puedo ayudarte?");
+  await handleMoreActions(ctx);
 });
 
 bot.action(/pelicula_(.*)/, async (ctx) => {
