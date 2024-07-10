@@ -5,7 +5,7 @@ const QRCode = require('qrcode');
 const { FieldValue, Timestamp } = require('firebase-admin/firestore');
 const dotenv = require('dotenv');
 const handleReservasActivas = require('./handleReservasActivas');
-const { handleMoreActions } = require('./handleMoreActions');
+const { handleMoreActions } = require('./handleMoreAction');
 dotenv.config();
 
 // Función para verificar si el usuario está registrado
