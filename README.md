@@ -2,6 +2,9 @@
 __**By**: Facundo Rodriguez_
 [![Perfil de LinkedIn](https://img.shields.io/badge/LinkedIn-Perfil-blue)](https://www.linkedin.com/in/facurg/)
 
+## Documentación del Proyecto:
+A continuación dejo adjunta la documentación respectiva:
+[Documentación - MovieBot](https://docs.google.com/document/d/1I6E3F135YnQXOOLx0g_5AdZQO5pZbN36KrvAYLPBUkc/edit?pli=1)
 
 ## Descripción
 MovieBot es un bot de Telegram diseñado para mejorar la experiencia de los clientes del Cine Mercedes. 
@@ -61,7 +64,7 @@ Los resultados de estas pruebas están documentados detalladamente en el siguien
 ## Pruebas de Usabilidad | Usuario Final: 
 - Además de la ejecución propia del producto para asegurar su funcionalidad, antes de lanzarlo al mercado, consideré necesario el feedback de los usuarios finales, a continuación puedes encontrar el informe de los mismos:
 
-[Documentación de Pruebas de Usabilidad]((https://docs.google.com/document/d/1X0JYb7LJuIAvmQbdDR5-UceCUnWao1iDs_JI9f-vuFA/edit?usp=sharing))
+[Informe Final de Testing Funcional](https://docs.google.com/document/d/1X0JYb7LJuIAvmQbdDR5-UceCUnWao1iDs_JI9f-vuFA/edit?usp=sharing))
 
 ### Uso
 - Para comenzar a usar MovieBot y experimentar una nueva forma de interactuar con el Cine Mercedes Digital, simplemente sigue este [link directo a MovieBot en Telegram](https://t.me/PruebitaDeBot).
