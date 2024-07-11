@@ -1,4 +1,4 @@
-# MovieBot para Cine Mercedes Digital (Desafío HeyNow!)
+# MovieBot para Cine Mercedes Digital
 __**By**: Facundo Rodriguez_
 [![Perfil de LinkedIn](https://img.shields.io/badge/LinkedIn-Perfil-blue)](https://www.linkedin.com/in/facurg/)
 
