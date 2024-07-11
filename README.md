@@ -61,7 +61,7 @@ Los resultados de estas pruebas están documentados detalladamente en el siguien
 ## Pruebas de Usabilidad | Usuario Final: 
 - Además de la ejecución propia del producto para asegurar su funcionalidad, antes de lanzarlo al mercado, consideré necesario el feedback de los usuarios finales, a continuación puedes encontrar el informe de los mismos:
 
-[Documentación de Pruebas de Usabilidad](InsertLink)
+[Documentación de Pruebas de Usabilidad]((https://docs.google.com/document/d/1X0JYb7LJuIAvmQbdDR5-UceCUnWao1iDs_JI9f-vuFA/edit?usp=sharing))
 
 ### Uso
 - Para comenzar a usar MovieBot y experimentar una nueva forma de interactuar con el Cine Mercedes Digital, simplemente sigue este [link directo a MovieBot en Telegram](https://t.me/PruebitaDeBot).
